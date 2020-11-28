@@ -1,12 +1,13 @@
 """
 libs.strings
 
-Se a linguagem mudar, defenir a variavel 'libs.strings.default_locale' e correr 'libs.strings.refresh()'
-"""
+By default, users 'en-gb.json' file inside 'strings' top-level folder.
 
+If language changes, set 'libs.strings.default_locale' and run 'libs.strings.refresh()'
+"""
 import json
 
-default_locale = "pt-pt"
+default_locale = "en-gb"
 cached_strings = {}
 
 
