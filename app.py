@@ -11,3 +11,7 @@ data = {
 @app.route('/')
 def hello_world():
     return render_template('index.html', data=data)
+
+
+if __name__ == "__main__":
+    app.run(port=5000, debug=True)
