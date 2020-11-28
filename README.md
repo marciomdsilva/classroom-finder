@@ -7,3 +7,4 @@ Instructions to setup
 3. Windows : `py -3 -m venv venv` / Linux : `python3 -m venv venv`
 4. Windows : `venv\Scripts\activate` / Linux : `. venv/bin/activate`
 5. `pip install flask`  
+6. `flask run`
