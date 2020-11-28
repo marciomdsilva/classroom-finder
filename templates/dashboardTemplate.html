@@ -40,9 +40,9 @@
 
     <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
-            {% if data.access==0 %}
+{#            {% if data.access==0 %}#}
                 <li {% if data.page=="horarios" %} class="nav-link active"
-                       {% else %} class="nav-link" {% endif %}>
+                    {% else %} class="nav-link" {% endif %}>
                     <a class="nav-link" href="#">Horários </a>
                 </li>
                 <li {% if data.page=="mapa" %} class="nav-link active"
@@ -57,28 +57,28 @@
                     {% else %} class="nav-link" {% endif %}>
                     <a class="nav-link" href="#">Definições</a>
                 </li>
-            {% elif access==1 %}
-                <li  {% if data.page=="dashboard" %} class="nav-link active"
-                       {% else %} class="nav-link" {% endif %}>
-                    <a class="nav-link" href="#">Dashboard</a>
-                </li>
-                <li {% if data.page=="utilizadores" %} class="nav-link active"
-                    {% else %} class="nav-link" {% endif %}>
-                    <a class="nav-link" href="#">Utilizadores</a>
-                </li>
-                <li {% if data.page=="cursos" %} class="nav-link active"
-                    {% else %} class="nav-link" {% endif %}>
-                    <a class="nav-link" href="#">Cursos</a>
-                </li>
-                <li {% if data.page=="cadeiras" %} class="nav-link active"
-                    {% else %} class="nav-link" {% endif %}>
-                    <a class="nav-link" href="#">Cadeiras</a>
-                </li>
-                <li {% if data.page=="horarios" %} class="nav-link active"
-                    {% else %} class="nav-link" {% endif %}>
-                    <a class="nav-link" href="#">Horários</a>
-                </li>
-            {% endif %}
+{#            {% elif access==1 %}#}
+{#                <li  {% if data.page=="dashboard" %} class="nav-link active"#}
+{#                       {% else %} class="nav-link" {% endif %}>#}
+{#                    <a class="nav-link" href="#">Dashboard</a>#}
+{#                </li>#}
+{#                <li {% if data.page=="utilizadores" %} class="nav-link active"#}
+{#                    {% else %} class="nav-link" {% endif %}>#}
+{#                    <a class="nav-link" href="#">Utilizadores</a>#}
+{#                </li>#}
+{#                <li {% if data.page=="cursos" %} class="nav-link active"#}
+{#                    {% else %} class="nav-link" {% endif %}>#}
+{#                    <a class="nav-link" href="#">Cursos</a>#}
+{#                </li>#}
+{#                <li {% if data.page=="cadeiras" %} class="nav-link active"#}
+{#                    {% else %} class="nav-link" {% endif %}>#}
+{#                    <a class="nav-link" href="#">Cadeiras</a>#}
+{#                </li>#}
+{#                <li {% if data.page=="horarios" %} class="nav-link active"#}
+{#                    {% else %} class="nav-link" {% endif %}>#}
+{#                    <a class="nav-link" href="#">Horários</a>#}
+{#                </li>#}
+{#            {% endif %}#}
 
         </ul>
         <form class="form-inline my-2 my-lg-0">
@@ -91,7 +91,7 @@
 <main role="main" class="container">
     {% block content %}
     {% endblock %}
-    {{data}}
+    {{ data }}
 </main>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
