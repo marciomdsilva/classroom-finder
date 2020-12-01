@@ -10,6 +10,8 @@ from blacklist import BLACKLIST
 from resources.user import UserRegister, User, UserLogin, UserLogout, TokenRefresh
 from resources.confirmation import Confirmation, ConfirmationByUser
 
+from routes.main import main
+
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -105,6 +107,8 @@ api.add_resource(UserLogout, "/logout")
 api.add_resource(TokenRefresh, "/refresh")
 api.add_resource(Confirmation, "/user_confirm/<string:confirmation_id>")
 api.add_resource(ConfirmationByUser, "/confirmation/user/<int:user_id>")
+
+app.register_blueprint(main)
 
 if __name__ == "__main__":
     db.init_app(app)
