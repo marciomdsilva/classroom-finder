@@ -7,7 +7,7 @@ admUtilizadores = Blueprint('admUtilizadores', __name__, template_folder='templa
 
 @admUtilizadores.route('/admUtilizadores')
 def admUtilizadoresTab():
-    returnRedirect = confirmCredentials()
+    returnRedirect = confirmCredentials(1, 1)
     if returnRedirect != "":
         return redirect(returnRedirect)
 

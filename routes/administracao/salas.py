@@ -7,7 +7,7 @@ admSalas = Blueprint('admSalas', __name__, template_folder='templates')
 
 @admSalas.route('/admSalas')
 def admUtilizadoresTab():
-    returnRedirect = confirmCredentials()
+    returnRedirect = confirmCredentials(1, 1)
     if returnRedirect != "":
         return redirect(returnRedirect)
 
