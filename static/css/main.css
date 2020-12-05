@@ -1,7 +1,14 @@
 
+body{
+    overflow-y: hidden;
+}
 
 #imap5custom_54620779 > div > div > svg {
     float:left;
     margin-left:-1px;
     margin-right:-1px;
+}
+
+.bg-whiteblue{
+    background-color: #1b9ca6;
 }

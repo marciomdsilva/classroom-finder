@@ -1,0 +1,10 @@
+{% extends 'template.html' %}
+
+
+{% block content %}
+    <div id="canvas">
+    <script src="{{ url_for('static', filename='iiCreator/imap5customcore.js') }}" type="application/javascript"></script>
+        <script type="application/javascript">imap5custom.init({usermap:54620779,local:true,base:"",responsivemap:true});</script>
+    </div>
+{% endblock %}
+

@@ -11,6 +11,10 @@ from resources.user import UserRegister, User, UserLogin, UserLogout, TokenRefre
 from resources.confirmation import Confirmation, ConfirmationByUser
 
 from routes.main import main
+from routes.administracao.cadeiras import admCadeiras
+from routes.administracao.utilizadores import admUtilizadores
+from routes.administracao.cursos import admCursos
+from routes.administracao.horarios import admHorarios
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
@@ -109,6 +113,10 @@ api.add_resource(Confirmation, "/user_confirm/<string:confirmation_id>")
 api.add_resource(ConfirmationByUser, "/confirmation/user/<int:user_id>")
 
 app.register_blueprint(main)
+app.register_blueprint(admUtilizadores)
+app.register_blueprint(admCadeiras)
+app.register_blueprint(admCursos)
+app.register_blueprint(admHorarios)
 
 if __name__ == "__main__":
     db.init_app(app)

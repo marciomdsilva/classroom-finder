@@ -6,8 +6,8 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v4.1.1">
-    <title>Offcanvas template · Bootstrap</title>
-
+    <title>ISMAT Localizações</title>
+    <link rel="shortcut icon" href="{{url_for('static', filename='favicon.ico')}}">
 
     <!-- Bootstrap core CSS -->
     <link href="{{ url_for('static', filename='css/bootstrap/bootstrap.min.css') }}" rel="stylesheet">
@@ -33,63 +33,61 @@
     <link href="{{ url_for('static', filename='css/offcanvas.css') }}" rel="stylesheet">
 </head>
 <body class="bg-light">
-<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
-    <a class="navbar-brand mr-auto mr-lg-0" href="#">Offcanvas navbar</a>
+<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-whiteblue" >
+    <a class="navbar-brand mr-auto mr-lg-0" href="#">ISMAT</a>
     <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+
         <ul class="navbar-nav mr-auto">
-            {% if data.access==0 %}
-                <li {% if data.page=="horarios" %} class="nav-link active"
-                {% else %} class="nav-link" {% endif %}>
-                    <a class="nav-link" href="/horarios">Horários </a>
+            <li {% if session['page']=="horarios" %} class="nav-link active"
+            {% else %} class="nav-link" {% endif %}>
+                <a class="nav-link" href="/horarios">Horários </a>
+            </li>
+            <li {% if session['page']=="mapa" %} class="nav-link active"
+            {% else %} class="nav-link" {% endif %}>
+                <a class="nav-link" href="/mapa">Mapa</a>
+            </li>
+            <li {% if session['page']=="calendario" %} class="nav-link active"
+            {% else %} class="nav-link" {% endif %}>
+                <a class="nav-link" href="/calendario">Calendário</a>
+            </li>
+            <li {% if session['page']=="definicoes" %} class="nav-link active"
+            {% else %} class="nav-link" {% endif %}>
+                <a class="nav-link" href="/definicoes">Definições</a>
+            </li>
+
+            {% if session['access']=="1" %}
+                <li
+                        {% if session['page']=="admUtilizadores" or session['page']=="admCursos" or session['page']=="admCadeiras" or session['page']=="admHorarios" %}
+                            class="nav-link  dropdown active"
+                        {% else %}
+                            class="nav-link  dropdown "
+                        {% endif %}>
+
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="true">Administração</a>
+                    <div class="dropdown-menu " aria-labelledby="dropdown01">
+                        <a class="dropdown-item" href="/admUtilizadores">Utilizadores</a>
+                        <a class="dropdown-item" href="/admCursos">Cursos</a>
+                        <a class="dropdown-item" href="/admCadeiras">Cadeiras</a>
+                        <a class="dropdown-item" href="/admHorarios">Horários</a>
+                    </div>
                 </li>
-                <li {% if data.page=="mapa" %} class="nav-link active"
-                {% else %} class="nav-link" {% endif %}>
-                    <a class="nav-link" href="/mapa">Mapa</a>
-                </li>
-                <li {% if data.page=="calendario" %} class="nav-link active"
-                {% else %} class="nav-link" {% endif %}>
-                    <a class="nav-link" href="/calendario">Calendário</a>
-                </li>
-                <li {% if data.page=="definicoes" %} class="nav-link active"
-                {% else %} class="nav-link" {% endif %}>
-                    <a class="nav-link" href="/definicoes">Definições</a>
-                </li>
-            {% elif access==1 %}
-                <li  {% if data.page=="dashboard" %} class="nav-link active"
-                {% else %} class="nav-link" {% endif %}>
-                    <a class="nav-link" href="#">Dashboard</a>
-                </li>
-                <li {% if data.page=="utilizadores" %} class="nav-link active"
-                {% else %} class="nav-link" {% endif %}>
-                    <a class="nav-link" href="/utilizadores">Utilizadores</a>
-                </li>
-                <li {% if data.page=="cursos" %} class="nav-link active"
-                {% else %} class="nav-link" {% endif %}>
-                    <a class="nav-link" href="/cursos">Cursos</a>
-                </li>
-                <li {% if data.page=="cadeiras" %} class="nav-link active"
-                {% else %} class="nav-link" {% endif %}>
-                    <a class="nav-link" href="/cadeiras">Cadeiras</a>
-                </li>
-                <li {% if data.page=="horarios" %} class="nav-link active"
-                {% else %} class="nav-link" {% endif %}>
-                    <a class="nav-link" href="/horarios">Horários</a>
-                </li>
+
             {% endif %}
+            <li  class="nav-link" >
+                <a class="nav-link" href="/logout">Terminar sessão </a>
+            </li>
 
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
     </div>
 </nav>
 
 <main role="main" class="container">
+{{session}}
     {% block content %}
     {% endblock %}
 </main>
