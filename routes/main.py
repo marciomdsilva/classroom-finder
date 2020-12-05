@@ -72,7 +72,7 @@ def horariotab():
 
 @main.route('/mapa')
 def maptab():
-    returnRedirect = confirmCredentials(1)
+    returnRedirect = confirmCredentials()
     if returnRedirect != "":
         return redirect(returnRedirect)
 
@@ -82,7 +82,7 @@ def maptab():
 
 @main.route('/calendario')
 def calendarTab():
-    returnRedirect = confirmCredentials(1)
+    returnRedirect = confirmCredentials()
     if returnRedirect != "":
         return redirect(returnRedirect)
 
@@ -92,7 +92,7 @@ def calendarTab():
 
 @main.route('/definicoes')
 def definicoesTab():
-    returnRedirect = confirmCredentials(1)
+    returnRedirect = confirmCredentials()
     if returnRedirect != "":
         return redirect(returnRedirect)
 
@@ -102,19 +102,32 @@ def definicoesTab():
 
 @main.route('/logout')
 def logout():
-    if len(session.keys()) != 0:
-        session.clear()
-    return redirect("/")
+    returnRedirect = confirmCredentials()
+    if returnRedirect != "":
+        return redirect(returnRedirect)
+
+    url = "http://127.0.0.1:5000//logout"
+    headers = {
+        'Authorization': 'Bearer ' + session['access_token'],
+    }
+    r = requests.request("POST", url, headers=headers, data={})
+    if r.status_code == 200:
+        if len(session.keys()) != 0:
+            session.clear()
+        return redirect("/")
+    return redirect("/"+session['page'])
 
 
 def confirmCredentials(notAutenticated=0):
     # Encontra-se autenticado, validar se tem token associados para a pagina
+    print(notAutenticated)
     if notAutenticated == 0:
         if len(session.keys()) == 0:
             return "/"
         elif session.get('page') == "":
+            print(session.get('page'))
             return "/horarios"
     # Não se encontra autenticado == 1, validar se está numa zona não autenticada
     elif len(session.keys()) != 0 and session.get('access_token') != "" and session.get('refresh_token') != "":
         return "/horarios"
-    return "";
+    return ""
