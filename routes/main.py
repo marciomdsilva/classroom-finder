@@ -11,6 +11,7 @@ def login():
     returnRedirect = confirmCredentials(1)
     if returnRedirect != "":
         return redirect(returnRedirect)
+
     return render_template('login.html')
 
 
@@ -71,18 +72,30 @@ def horariotab():
 
 @main.route('/mapa')
 def maptab():
+    returnRedirect = confirmCredentials(1)
+    if returnRedirect != "":
+        return redirect(returnRedirect)
+
     session['page'] = "mapa"
     return render_template('index.html')
 
 
 @main.route('/calendario')
 def calendarTab():
+    returnRedirect = confirmCredentials(1)
+    if returnRedirect != "":
+        return redirect(returnRedirect)
+
     session['page'] = "calendario"
     return render_template('index.html')
 
 
 @main.route('/definicoes')
 def definicoesTab():
+    returnRedirect = confirmCredentials(1)
+    if returnRedirect != "":
+        return redirect(returnRedirect)
+
     session['page'] = "definicoes"
     return render_template('index.html')
 
