@@ -5,6 +5,7 @@ from flask import Blueprint, render_template, redirect, request, json, session
 
 main = Blueprint('main', __name__, template_folder='templates')
 
+
 @main.route('/')
 def login():
     returnRedirect = confirmCredentials(1)
@@ -38,6 +39,7 @@ def auth():
         return render_template("/login.html", data="Dados incorretos.")
     else:
         return render_template("/login.html", data="Tente novamente.")
+
 
 @main.route('/recuperar')
 def recuperar():
@@ -84,6 +86,7 @@ def definicoesTab():
     session['page'] = "definicoes"
     return render_template('index.html')
 
+
 @main.route('/logout')
 def logout():
     if len(session.keys()) != 0:
@@ -94,12 +97,11 @@ def logout():
 def confirmCredentials(notAutenticated=0):
     # Encontra-se autenticado, validar se tem token associados para a pagina
     if notAutenticated == 0:
-        if len(session.keys()) == 0 :
+        if len(session.keys()) == 0:
             return "/"
-        elif session.get('page') == "" :
+        elif session.get('page') == "":
             return "/horarios"
     # Não se encontra autenticado == 1, validar se está numa zona não autenticada
     elif len(session.keys()) != 0 and session.get('access_token') != "" and session.get('refresh_token') != "":
         return "/horarios"
     return "";
-

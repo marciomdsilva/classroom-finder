@@ -26,7 +26,6 @@ app.secret_key = os.environ.get("APP_SECRET_KEY")  # app.config['JWT_SECRET_KEY'
 api = Api(app)
 
 
-
 # execute after the first request
 @app.before_request
 def create_tables():
