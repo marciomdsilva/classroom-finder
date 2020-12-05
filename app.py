@@ -15,6 +15,7 @@ from routes.administracao.cadeiras import admCadeiras
 from routes.administracao.utilizadores import admUtilizadores
 from routes.administracao.cursos import admCursos
 from routes.administracao.horarios import admHorarios
+from routes.administracao.salas import admSalas
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
@@ -116,6 +117,7 @@ app.register_blueprint(admUtilizadores)
 app.register_blueprint(admCadeiras)
 app.register_blueprint(admCursos)
 app.register_blueprint(admHorarios)
+app.register_blueprint(admSalas)
 
 if __name__ == "__main__":
     db.init_app(app)
