@@ -9,6 +9,8 @@ from db import db
 from blacklist import BLACKLIST
 from resources.user import UserRegister, User, UserLogin, UserLogout, TokenRefresh
 from resources.confirmation import Confirmation, ConfirmationByUser
+from resources.cadeira import Cadeira, CadeiraList
+from resources.curso import Curso, CursoList
 
 from routes.main import main
 from routes.administracao.cadeiras import admCadeiras
@@ -103,6 +105,11 @@ def revoked_token_callback():
         401,
     )
 
+
+api.add_resource(Curso, "/curso/<string:name>")
+api.add_resource(CursoList, "/cursos")
+api.add_resource(Cadeira, "/cadeira/<string:name>")
+api.add_resource(CadeiraList, "/cadeiras")
 
 api.add_resource(UserRegister, "/register")
 api.add_resource(User, "/user/<int:user_id>")

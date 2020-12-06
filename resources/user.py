@@ -17,7 +17,6 @@ from libs.mailgun import MailGunException
 from libs.strings import gettext
 from models.confirmation import ConfirmationModel
 
-
 user_schema = UserSchema()
 
 
@@ -70,7 +69,7 @@ class UserLogin(Resource):
     def post(cls):
         # get data
         user_json = request.get_json()
-        user_data = user_schema.load(user_json, partial=("email",))  # ignore email field if is not present
+        user_data = user_schema.load(user_json, partial=("email", "name",))  # ignora o email e o nome apenas precisa do nome de utilizador e password
 
         # find user in database
         user = UserModel.find_by_username(user_data.username)

@@ -9,6 +9,16 @@
   "confirmation_resend_fail": "Internal server error. Failed to resend confirmation email.",
   "confirmation_resend_successful": "E-mail confirmation successfully re-sent.",
 
+  "cadeira_name_exists": "An cadeira with name '{}' already exists.",
+  "cadeira_error_inserting": "An error occurred while inserting the cadeira.",
+  "cadeira_not_found": "Cadeira not found.",
+  "cadeira_deleted": "Cadeira deleted.",
+
+  "curso_name_exists": "A curso with name '{}' already exists.",
+  "curso_error_inserting": "An error occurred while inserting the curso.",
+  "curso_not_found": "Curso not found.",
+  "curso_deleted": "Curso deleted.",
+
   "user_username_exists": "A user with that username already exists.",
   "user_email_exists": "A user with that email already exists.",
   "user_not_found": "User not found.",
