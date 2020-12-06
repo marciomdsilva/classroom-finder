@@ -8,7 +8,7 @@ main = Blueprint('main', __name__, template_folder='templates')
 
 @main.route('/')
 def login():
-    returnRedirect = confirmCredentials(1)
+    returnRedirect = confirmCredentials(0, 0)
     if returnRedirect != "":
         return redirect(returnRedirect)
 
@@ -17,7 +17,7 @@ def login():
 
 @main.route('/', methods=['POST'])
 def auth():
-    returnRedirect = confirmCredentials(1)
+    returnRedirect = confirmCredentials(0, 0)
     if returnRedirect != "":
         return redirect(returnRedirect)
 
@@ -27,14 +27,14 @@ def auth():
     headers = {
         'Content-Type': 'application/json'
     }
-    payload = json.dumps(dataPost).replace('"', '\"');
+    payload = json.dumps(dataPost).replace('"', '\"')
     r = requests.request("POST", url, headers=headers, data=payload)
 
     if r.status_code == 200:
         response = r.json()
         session['access_token'] = response['access_token']
         session['refresh_token'] = response['refresh_token']
-        session['access'] = "1";
+        session['access'] = 1
         return redirect("/horarios")
     elif r.status_code == 401:
         return render_template("/login.html", data="Dados incorretos.")
@@ -44,7 +44,7 @@ def auth():
 
 @main.route('/recuperar')
 def recuperar():
-    returnRedirect = confirmCredentials(1)
+    returnRedirect = confirmCredentials(0, 0)
     if returnRedirect != "":
         return redirect(returnRedirect)
 
@@ -53,7 +53,7 @@ def recuperar():
 
 @main.route('/recuperar', methods=['POST'])
 def recuperarSendEmail():
-    returnRedirect = confirmCredentials(1)
+    returnRedirect = confirmCredentials(0, 0)
     if returnRedirect != "":
         return redirect(returnRedirect)
 
@@ -62,7 +62,7 @@ def recuperarSendEmail():
 
 @main.route('/horarios')
 def horariotab():
-    returnRedirect = confirmCredentials(0)
+    returnRedirect = confirmCredentials(1, 0)
     if returnRedirect != "":
         return redirect(returnRedirect)
 
@@ -72,7 +72,7 @@ def horariotab():
 
 @main.route('/mapa')
 def maptab():
-    returnRedirect = confirmCredentials()
+    returnRedirect = confirmCredentials(1, 0)
     if returnRedirect != "":
         return redirect(returnRedirect)
 
@@ -82,7 +82,7 @@ def maptab():
 
 @main.route('/calendario')
 def calendarTab():
-    returnRedirect = confirmCredentials()
+    returnRedirect = confirmCredentials(1, 0)
     if returnRedirect != "":
         return redirect(returnRedirect)
 
@@ -92,7 +92,7 @@ def calendarTab():
 
 @main.route('/definicoes')
 def definicoesTab():
-    returnRedirect = confirmCredentials()
+    returnRedirect = confirmCredentials(1, 0)
     if returnRedirect != "":
         return redirect(returnRedirect)
 
@@ -102,7 +102,7 @@ def definicoesTab():
 
 @main.route('/logout')
 def logout():
-    returnRedirect = confirmCredentials()
+    returnRedirect = confirmCredentials(1, 0)
     if returnRedirect != "":
         return redirect(returnRedirect)
 
@@ -111,23 +111,26 @@ def logout():
         'Authorization': 'Bearer ' + session['access_token'],
     }
     r = requests.request("POST", url, headers=headers, data={})
-    if r.status_code == 200:
+
+    if r.status_code == 200 or r.status_code == 401:
         if len(session.keys()) != 0:
             session.clear()
         return redirect("/")
-    return redirect("/"+session['page'])
+    return redirect("/" + session['page'])
 
 
-def confirmCredentials(notAutenticated=0):
+def confirmCredentials(autenticated=0, adminArea=0):
     # Encontra-se autenticado, validar se tem token associados para a pagina
-    print(notAutenticated)
-    if notAutenticated == 0:
+    if autenticated == 1:
         if len(session.keys()) == 0:
             return "/"
         elif session.get('page') == "":
             print(session.get('page'))
             return "/horarios"
+
     # Não se encontra autenticado == 1, validar se está numa zona não autenticada
     elif len(session.keys()) != 0 and session.get('access_token') != "" and session.get('refresh_token') != "":
+        return "/horarios"
+    if adminArea == 1 and session.get('access') != 1:
         return "/horarios"
     return ""

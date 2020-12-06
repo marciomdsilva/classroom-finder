@@ -7,7 +7,7 @@ admCadeiras = Blueprint('admCadeiras', __name__, template_folder='templates')
 
 @admCadeiras.route('/admCadeiras')
 def admCadeirasTab():
-    returnRedirect = confirmCredentials()
+    returnRedirect = confirmCredentials(1, 1)
     if returnRedirect != "":
         return redirect(returnRedirect)
 
