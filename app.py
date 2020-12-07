@@ -106,9 +106,9 @@ def revoked_token_callback():
     )
 
 
-api.add_resource(Curso, "/curso/<string:name>")
+api.add_resource(Curso, "/curso")
 api.add_resource(CursoList, "/cursos")
-api.add_resource(Cadeira, "/cadeira/<string:name>")
+api.add_resource(Cadeira, "/cadeira")
 api.add_resource(CadeiraList, "/cadeiras")
 
 api.add_resource(UserRegister, "/register")

@@ -20,7 +20,10 @@ cadeira_list_schema = CadeiraSchema(many=True)
 class Cadeira(Resource):
     @classmethod
     @jwt_required
-    def get(cls, name: str):
+    def get(cls):
+        cadeira_json = request.get_json()
+        name = cadeira_json["name"]
+
         cadeira = CadeiraModel.find_by_name(name)
         if cadeira:
             return cadeira_schema.dump(cadeira), 200
@@ -28,11 +31,13 @@ class Cadeira(Resource):
 
     @classmethod
     @fresh_jwt_required
-    def post(cls, name: str):
+    def post(cls):
+        cadeira_json = request.get_json()
+        name = cadeira_json["name"]
+
         if CadeiraModel.find_by_name(name):
             return {"message": gettext("cadeira_name_exists").format(name)}, 400
 
-        cadeira_json = request.get_json()  # price, store_id
         cadeira_json["name"] = name
 
         cadeira = cadeira_schema.load(cadeira_json)
@@ -45,7 +50,10 @@ class Cadeira(Resource):
 
     @classmethod
     @jwt_required
-    def delete(cls, name: str):
+    def delete(cls):
+        cadeira_json = request.get_json()
+        name = cadeira_json["name"]
+
         claims = get_jwt_claims()
         if not claims["is_admin"]:
             return {"message": "Admin previlege required"}, 401
@@ -57,8 +65,9 @@ class Cadeira(Resource):
         return {"message": gettext("cadeira_not_found")}, 404
 
     @classmethod
-    def put(cls, name: str):
+    def put(cls):
         cadeira_json = request.get_json()
+        name = cadeira_json["name"]
         cadeira = CadeiraModel.find_by_name(name)
 
         if cadeira:

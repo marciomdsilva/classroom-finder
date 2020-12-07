@@ -18,6 +18,7 @@
   "curso_error_inserting": "An error occurred while inserting the curso.",
   "curso_not_found": "Curso not found.",
   "curso_deleted": "Curso deleted.",
+  "curso_dependency": "There are subjects associated with this course. Impossible to eliminate!",
 
   "user_username_exists": "A user with that username already exists.",
   "user_email_exists": "A user with that email already exists.",
