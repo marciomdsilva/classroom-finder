@@ -10,10 +10,7 @@
     <link href="{{ url_for('static', filename='css/bootstrap/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-        integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
-        crossorigin="anonymous"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -33,11 +30,8 @@
     <!-- Custom styles for this template -->
     <link href="{{ url_for('static', filename='css/offcanvas.css') }}" rel="stylesheet">
 
-    <main role="main" class="container">
-        {{ session }}
-        {% block headCont %}
-        {% endblock %}
-    </main>
+    {% block headCont %}
+    {% endblock %}
 
 </head>
 <body class="bg-light">
@@ -107,5 +101,9 @@
 <script src="{{ url_for('static', filename='js/bootstrap/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/offcanvas.js') }}"></script>
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+{% block scriptTags %}
+{% endblock %}
+
 </body>
 </html>

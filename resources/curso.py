@@ -83,7 +83,6 @@ class CursoId(Resource):
     @jwt_required
     def put(cls, curso_id: int):
         claims = get_jwt_claims()
-        print(claims)
         if not claims["access"] or claims["access"] != 2:
             return {"message": "Admin previlege required"}, 401
 
