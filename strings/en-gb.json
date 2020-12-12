@@ -16,6 +16,7 @@
 
   "curso_name_exists": "A curso with name '{}' already exists.",
   "curso_error_inserting": "An error occurred while inserting the curso.",
+  "curso_error_editing": "An error occurred while editing the curso.",
   "curso_not_found": "Curso not found.",
   "curso_deleted": "Curso deleted.",
   "curso_dependency": "There are subjects associated with this course. Impossible to eliminate!",

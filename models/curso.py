@@ -15,6 +15,10 @@ class CursoModel(db.Model):
         return cls.query.filter_by(name=name).first()  # SELECT * FROM items Where name=name LIMIT 1
 
     @classmethod
+    def find_by_id(self, curso_id: int) -> "CursoModel":
+        return self.query.filter_by(curso_id=curso_id).first()  # SELECT * FROM items Where name=name LIMIT 1
+
+    @classmethod
     def find_all(cls) -> List["CursoModel"]:
         return cls.query.all()
 
