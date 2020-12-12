@@ -70,17 +70,16 @@ class UserLogin(Resource):
         # get data
         user_json = request.get_json()
         user_data = user_schema.load(user_json, partial=(
-        "email", "name",))  # ignora o email e o nome apenas precisa do nome de utilizador e password
+            "email", "name",))  # ignora o email e o nome apenas precisa do nome de utilizador e password
 
         # find user in database
         user = UserModel.find_by_username(user_data.username)
-
         # check password
         if user and safe_str_cmp(user.password, user_data.password):
             confirmation = user.most_recent_confirmation
             if confirmation and confirmation.confirmed:
                 # create acess token
-                access_token = create_access_token(identity=user.id, fresh=True)
+                access_token = create_access_token(identity={"access": user.access, "identity": user.id}, fresh=True)
                 # create refresh token
                 refresh_token = create_refresh_token(user.id)
                 return {"access_token": access_token, "refresh_token": refresh_token, "access": user.access}, 200
@@ -94,9 +93,9 @@ class UserLogout(Resource):
     @jwt_required
     def post(cls):
         jti = get_raw_jwt()["jti"]  # jti is a"JWT ID", a unique identifier for a JWT.
-        user_id = get_jwt_identity()
+        current_user = get_jwt_identity()
         BLACKLIST.add(jti)
-        return {"message": gettext("user_logged_out").format(user_id)}, 200
+        return {"message": gettext("user_logged_out").format(current_user['identity'])}, 200
 
 
 class TokenRefresh(Resource):

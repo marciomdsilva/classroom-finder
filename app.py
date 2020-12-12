@@ -25,6 +25,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["PROPAGATE_EXCEPTIONS"] = True
 app.config["JWT_BLACKLIST_ENABLED"] = True
 app.config["JWT_BLACKLIST_TOKEN_CHECKS"] = ["access", "refresh"]
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = 60
 app.secret_key = os.environ.get("APP_SECRET_KEY")  # app.config['JWT_SECRET_KEY']
 api = Api(app)
 
@@ -45,9 +46,10 @@ jwt = JWTManager(app)
 
 @jwt.user_claims_loader
 def add_claims_to_jwt(identity):
-    if identity == 1:
-        return {"is_admin": True}
-    return {"is_admin": False}
+    return {
+        'identity': identity["identity"],
+        'access': identity["access"]
+    }
 
 
 @jwt.token_in_blacklist_loader

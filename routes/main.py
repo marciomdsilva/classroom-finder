@@ -125,7 +125,6 @@ def confirmCredentials(autenticated=0, adminArea=0):
         if len(session.keys()) == 0:
             return "/"
         elif session.get('page') == "":
-            print(session.get('page'))
             return "/horarios"
 
     # Não se encontra autenticado == 1, validar se está numa zona não autenticada

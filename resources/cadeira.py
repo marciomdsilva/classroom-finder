@@ -55,7 +55,7 @@ class Cadeira(Resource):
         name = cadeira_json["name"]
 
         claims = get_jwt_claims()
-        if not claims["is_admin"]:
+        if not claims["access"] or claims["access"] != 2:
             return {"message": "Admin previlege required"}, 401
 
         cadeira = CadeiraModel.find_by_name(name)

@@ -8,7 +8,7 @@ from flask_jwt_extended import (
     get_jwt_claims,
     jwt_optional,
     get_jwt_identity,
-    fresh_jwt_required,
+    fresh_jwt_required, jwt_refresh_token_required,
 )
 
 curso_schema = CursoSchema()
@@ -48,7 +48,7 @@ class Curso(Resource):
         name = curso_json["name"]
 
         claims = get_jwt_claims()
-        if not claims["is_admin"]:
+        if not claims["access"] or claims["access"] != 2:
             return {"message": "Admin previlege required"}, 401
 
         curso = CursoModel.find_by_name(name)
@@ -83,7 +83,8 @@ class CursoId(Resource):
     @jwt_required
     def put(cls, curso_id: int):
         claims = get_jwt_claims()
-        if not claims["is_admin"]:
+        print(claims)
+        if not claims["access"] or claims["access"] != 2:
             return {"message": "Admin previlege required"}, 401
 
         curso_json = request.get_json()
@@ -103,7 +104,7 @@ class CursoId(Resource):
     @jwt_required
     def delete(cls, curso_id: int):
         claims = get_jwt_claims()
-        if not claims["is_admin"]:
+        if not claims["access"] or claims["access"] != 2:
             return {"message": "Admin previlege required"}, 401
 
         curso = CursoModel.find_by_id(curso_id)
@@ -118,10 +119,10 @@ class CursoId(Resource):
 
 class CursoGeral(Resource):
     @classmethod
-    @jwt_required
+    @fresh_jwt_required
     def post(cls):
         claims = get_jwt_claims()
-        if not claims["is_admin"]:
+        if not claims["access"] or claims["access"] != 2:
             return {"message": "Admin previlege required"}, 401
 
         curso_json = request.get_json()
@@ -142,3 +143,4 @@ class CursoGeral(Resource):
             return {"cursos": curso_list_schema.dump(CursoModel.find_all())}, 200
         else:
             return {"cursos": curso_list_schema.dump(CursoModel.find_all(request.args['search']))}, 200
+
