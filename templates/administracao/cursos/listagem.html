@@ -7,7 +7,8 @@
     <h2>Listagem de Cursos</h2>
     <form class="form-inline" style="float: right" method="post" action="admCursos">
         <label class="sr-only" for="procurar">Procurar</label>
-        <input type="text" name="procurar" class="form-control mb-2 mr-sm-2" id="procurar" value="{% if data["form"] is defined  %}{{ data["form"] }}{% endif %}">
+        <input type="text" name="procurar" class="form-control mb-2 mr-sm-2" id="procurar"
+               value="{% if data["form"] is defined %}{{ data["form"] }}{% endif %}">
 
         <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
     </form>
@@ -33,7 +34,8 @@
                     <a class="edit btn btn-warning text-white" title="Editar" data-toggle="tooltip">
                         <i class="fas fa-edit"></i>
                     </a>
-                    <a class="delete btn btn-danger" title="Eliminar" alt="{{ result["curso_id"] }}" data-toggle="tooltip">
+                    <a class="delete btn btn-danger" title="Eliminar" alt="{{ result["curso_id"] }}"
+                       data-toggle="tooltip">
                         <i class="fas fa-trash-alt"></i>
                     </a>
                 </td>
@@ -42,6 +44,18 @@
 
         </tbody>
     </table>
+    <div id="buttonsDefault" style="display:none">
+        <a class="add btn btn-success text-white" title="Guardar" data-toggle="tooltip"
+           style="display:none">
+            <i class="far fa-save"></i>
+        </a>
+        <a class="edit btn btn-warning text-white" title="Editar" data-toggle="tooltip">
+            <i class="fas fa-edit"></i>
+        </a>
+        <a class="delete btn btn-danger" title="Eliminar" data-toggle="tooltip">
+            <i class="fas fa-trash-alt"></i>
+        </a>
+    </div>
     <button type="button" style="float: left" class="btn btn-success add-new"><i class="fa fa-plus"></i> Criar</button>
 {% endblock %}
 

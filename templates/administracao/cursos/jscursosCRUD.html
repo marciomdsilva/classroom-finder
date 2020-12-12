@@ -1,7 +1,7 @@
 <script>
     $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip();
-        var actions = $("table td:last-child").html();
+        var actions = $("#buttonsDefault").html();
         // Append table with add row form on add new button click
         $(".add-new").click(function () {
             $(this).attr("disabled", "disabled");
@@ -57,11 +57,14 @@
                             input.each(function (k) {
                                 if (k == 0)
                                     $(this).parent("td").html(data['curso_id']);
+
                                 else
                                     $(this).parent("td").html($(this).val());
                             });
                             $(this).parents("tr").find(".add, .edit").toggle();
                             $(".add-new").removeAttr("disabled");
+                            if (method == "POST")
+                                 $(this).parents("tr").find(".delete")[0].setAttribute("alt",data['curso_id'])
                             console.log(response.status)
                         } else
                             alert("Status " + response.status + " - " + response.statusText + " " + data["message"]);
@@ -84,6 +87,12 @@
         });
         // Delete row on delete button click
         $(document).on("click", ".delete", function () {
+            let tr = this.parentElement.parentElement;
+            if (tr.children[0].firstChild.name == 'newId') {
+                $(this).parents("tr").remove();
+                $(".add-new").removeAttr("disabled");
+                return;
+            }
             let url = "http://localhost:5000/cursos_/" + this.attributes.getNamedItem("alt").value;
             fetch(url, {
                 method: "DELETE", // or 'PUT'

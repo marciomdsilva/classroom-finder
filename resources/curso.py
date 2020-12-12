@@ -70,10 +70,7 @@ class CursoList(Resource):
 # ALTERAÇÕES
 class CursoId(Resource):
     @classmethod
-    def get(cls, curso_id: int = None):
-        if 0 == curso_id:
-            return {"cursos": curso_list_schema.dump(CursoModel.find_all())}, 200
-
+    def get(cls, curso_id: int):
         curso = CursoModel.find_by_id(curso_id)
         if not curso:
             return {"message": gettext("curso_not_found")}, 404
