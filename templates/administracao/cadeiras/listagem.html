@@ -2,9 +2,93 @@
 
 
 {% block content %}
-    <div id="canvas">
-    <script src="{{ url_for('static', filename='iiCreator/imap5customcore.js') }}" type="application/javascript"></script>
-        <script type="application/javascript">imap5custom.init({usermap:54620779,local:true,base:"",responsivemap:true});</script>
+
+    <h2>Listagem de Cadeiras</h2>
+    <form class="form-inline" style="float: right" method="post" action="admCadeiras">
+        <div class="form-group">
+            <label for="filter" class="mb-2 mr-sm-2">Filtragem por Cursos:</label>
+            <select id="filter" class="form-control mb-2 mr-sm-2">
+                <option selected>Todos</option>
+                {% for result in data["cursos"] %}
+                    <option>{{ result["name"] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="sr-only" for="procurar">Procurar</label>
+            <input type="text" name="procurar" class="form-control mb-2 mr-sm-2" id="procurar"
+                   value="{% if data["form"] is defined %}{{ data["form"] }}{% endif %}">
+            <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+        </div>
+    </form>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col" width="20%">Código</th>
+            <th scope="col" width="35%">Curso</th>
+            <th scope="col" width="34%">Nome</th>
+            <th scope="col" width="11%"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>1</td>
+            <td>Engenharia Informática</td>
+            <td>Engenharia de Software</td>
+            <td>
+                <a class="add btn btn-success text-white" title="Guardar" data-toggle="tooltip"
+                   style="display:none">
+                    <i class="far fa-save"></i>
+                </a>
+                <a class="edit btn btn-warning text-white" title="Editar" data-toggle="tooltip">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a class="delete btn btn-danger" title="Eliminar" alt="1"
+                   data-toggle="tooltip">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+            </td>
+        </tr>
+        {% for result in data["cadeiras"] %}
+            <tr>
+                <td>{{ result["cadeiras_id"] }}</td>
+                <td>{# Curso #}</td>
+                <td>{{ result["name"] }}</td>
+                <td>
+                    <a class="add btn btn-success text-white" title="Guardar" data-toggle="tooltip"
+                       style="display:none">
+                        <i class="far fa-save"></i>
+                    </a>
+                    <a class="edit btn btn-warning text-white" title="Editar" data-toggle="tooltip">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a class="delete btn btn-danger" title="Eliminar" alt="{{ result["curso_id"] }}"
+                       data-toggle="tooltip">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+    <div id="buttonsDefault" style="display:none">
+        <a class="add btn btn-success text-white" title="Guardar" data-toggle="tooltip"
+           style="display:none">
+            <i class="far fa-save"></i>
+        </a>
+        <a class="edit btn btn-warning text-white" title="Editar" data-toggle="tooltip">
+            <i class="fas fa-edit"></i>
+        </a>
+        <a class="delete btn btn-danger" title="Eliminar" data-toggle="tooltip">
+            <i class="fas fa-trash-alt"></i>
+        </a>
     </div>
+    <button type="button" style="float: left" class="btn btn-success add-new"><i class="fa fa-plus"></i> Criar</button>
+
 {% endblock %}
 
+{% block scriptTags %}
+    {% include 'administracao/cadeiras/jscadeirasCRUD.html' %}
+{% endblock %}

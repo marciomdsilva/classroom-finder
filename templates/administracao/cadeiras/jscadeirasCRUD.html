@@ -1,0 +1,111 @@
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+        console.log(document.getElementById("buttonsDefault"))
+        var actions = $("#buttonsDefault").html();
+        console.log(actions)
+        // Append table with add row form on add new button click
+        $(".add-new").click(function () {
+            $(this).attr("disabled", "disabled");
+            var index = $("table tbody tr:last-child").index();
+            var row = '<tr>' +
+                '<td><input type="text" class="form-control" name="newId" disabled></td>' +
+                '<td><select id="filter" class="form-control mb-2 mr-sm-2">{% for result in data["cursos"] %}<option>{{ result["name"] }}</option>{% endfor %}</select></td>' +
+                '<td><input type="text" class="form-control" name="newNome" ></td>' +
+                '<td>' + actions + '</td>' +
+                '</tr>';
+            $("table").append(row);
+            $("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+        // Add row on add button click
+        $(document).on("click", ".add", function () {
+            var empty = false;
+            var input = $(this).parents("tr").find('input[type="text"]');
+            input.each(function (k) {
+                if (k != 0)
+                    if (!$(this).val()) {
+                        $(this).addClass("error");
+                        empty = true;
+                    } else {
+                        $(this).removeClass("error");
+                    }
+
+            });
+
+            $(this).parents("tr").find(".error").first().focus();
+            if (!empty) {
+                let method;
+                let data;
+                let url = "http://localhost:5000/cursos_";
+                let tr = this.parentElement.parentElement;
+                if (tr.children[0].firstChild.name == 'newId') {
+                    method = "POST";
+                } else {
+                    url = url + "/" + tr.children[0].firstChild.value;
+                    method = "PUT";
+                }
+                data = {"name": tr.children[1].firstChild.value}
+                fetch(url, {
+                    method: method, // or 'PUT'
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer {{ session['access_token'] }}'
+                    },
+                    body: JSON.stringify(data),
+                }).then(response => {
+                    response.json().then(data => {
+
+                        if (response.status == 200 || response.status == 201) {
+                            input.each(function (k) {
+                                if (k == 0)
+                                    $(this).parent("td").html(data['curso_id']);
+                                else
+                                    $(this).parent("td").html($(this).val());
+                            });
+                            $(this).parents("tr").find(".add, .edit").toggle();
+                            $(".add-new").removeAttr("disabled");
+                            console.log(response.status)
+                        } else
+                            alert("Status " + response.status + " - " + response.statusText + " " + data["message"]);
+                    });
+                }).catch((error) => {
+                    console.error('Error:', error);
+                });
+            }
+        });
+        // Edit row on edit button click
+        $(document).on("click", ".edit", function () {
+            $(this).parents("tr").find("td:not(:last-child)").each(function (k) {
+                if (k == 0)
+                    $(this).html('<input type="text" name="id" class="form-control" value="' + $(this).text() + '" disabled>');
+                else
+                    $(this).html('<input type="text" name="name" class="form-control" value="' + $(this).text() + '">');
+            });
+            $(this).parents("tr").find(".add, .edit").toggle();
+            $(".add-new").attr("disabled", "disabled");
+        });
+        // Delete row on delete button click
+        $(document).on("click", ".delete", function () {
+            let url = "http://localhost:5000/cursos_/" + this.attributes.getNamedItem("alt").value;
+            fetch(url, {
+                method: "DELETE", // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer {{ session['access_token'] }}'
+                },
+            }).then(response => {
+                response.json().then(data => {
+                    if (response.status == 200 || response.status == 201) {
+                        $(this).parents("tr").remove();
+                        $(".add-new").removeAttr("disabled");
+                    } else
+                        alert("Status " + response.status + " - " + response.statusText + " " + data["message"]);
+                });
+            }).catch((error) => {
+                console.error('Error:', error);
+            });
+
+        });
+    });
+</script>
