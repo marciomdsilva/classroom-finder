@@ -13,7 +13,8 @@ class UserModel(db.Model):
     username = db.Column(db.String(80), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(80), nullable=False, unique=True)
-    name = db.Column(db.String(80), nullable=False, unique=True)
+    name = db.Column(db.String(80), nullable=False)
+    access = db.Column(db.Integer, nullable=False, default=0)  # 0=>aluno, 1=>professor, 2=>administracao
 
     confirmation = db.relationship("ConfirmationModel", lazy="dynamic", cascade="all, delete-orphan")
 

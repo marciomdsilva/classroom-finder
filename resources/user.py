@@ -69,7 +69,8 @@ class UserLogin(Resource):
     def post(cls):
         # get data
         user_json = request.get_json()
-        user_data = user_schema.load(user_json, partial=("email", "name",))  # ignora o email e o nome apenas precisa do nome de utilizador e password
+        user_data = user_schema.load(user_json, partial=(
+        "email", "name",))  # ignora o email e o nome apenas precisa do nome de utilizador e password
 
         # find user in database
         user = UserModel.find_by_username(user_data.username)
@@ -82,7 +83,7 @@ class UserLogin(Resource):
                 access_token = create_access_token(identity=user.id, fresh=True)
                 # create refresh token
                 refresh_token = create_refresh_token(user.id)
-                return {"access_token": access_token, "refresh_token": refresh_token}, 200
+                return {"access_token": access_token, "refresh_token": refresh_token, "access": user.access}, 200
             return {'message': gettext("user_not_confirmed").format(user.email)}, 400
 
         return {"message": gettext("user_invalid_credentials")}, 401

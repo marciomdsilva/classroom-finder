@@ -34,7 +34,7 @@ def auth():
         response = r.json()
         session['access_token'] = response['access_token']
         session['refresh_token'] = response['refresh_token']
-        session['access'] = 1
+        session['access'] = response['access']
         return redirect("/horarios")
     elif r.status_code == 401:
         return render_template("/login.html", data="Dados incorretos.")
@@ -131,6 +131,6 @@ def confirmCredentials(autenticated=0, adminArea=0):
     # Não se encontra autenticado == 1, validar se está numa zona não autenticada
     elif len(session.keys()) != 0 and session.get('access_token') != "" and session.get('refresh_token') != "":
         return "/horarios"
-    if adminArea == 1 and session.get('access') != 1:
+    if adminArea == 1 and session.get('access') != 2:
         return "/horarios"
     return ""

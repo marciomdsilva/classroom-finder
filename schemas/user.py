@@ -7,7 +7,7 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = UserModel
         load_only = ("password",)
-        dump_only = ("id", "confirmation")
+        dump_only = ("id",  "email", "name", "access","confirmation")
         include_relationships = True
         load_instance = True
 
