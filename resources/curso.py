@@ -138,7 +138,7 @@ class CursoGeral(Resource):
 
     @classmethod
     def get(cls):
-        if(request.args['search'] is None):
-            return {"cursos": curso_list_schema.dump(CursoModel.find_all(None))}, 200
+        if len(request.args) == 0 or request.args.get("search") is None:
+            return {"cursos": curso_list_schema.dump(CursoModel.find_all())}, 200
         else:
             return {"cursos": curso_list_schema.dump(CursoModel.find_all(request.args['search']))}, 200
