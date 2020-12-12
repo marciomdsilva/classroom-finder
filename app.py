@@ -9,7 +9,7 @@ from db import db
 from blacklist import BLACKLIST
 from resources.user import UserRegister, User, UserLogin, UserLogout, TokenRefresh
 from resources.confirmation import Confirmation, ConfirmationByUser
-from resources.cadeira import Cadeira, CadeiraList
+from resources.cadeira import Cadeira, CadeiraList, CadeiraId, CadeiraGeral
 from resources.curso import Curso, CursoList, CursoId, CursoGeral
 
 from routes.main import main
@@ -112,8 +112,11 @@ api.add_resource(Curso, "/curso")
 api.add_resource(CursoList, "/cursos")
 api.add_resource(CursoGeral, "/cursos_")
 api.add_resource(CursoId, "/cursos_/<int:curso_id>")
+
 api.add_resource(Cadeira, "/cadeira")
 api.add_resource(CadeiraList, "/cadeiras")
+api.add_resource(CadeiraGeral, "/cadeiras_")
+api.add_resource(CadeiraId, "/cadeiras_/<int:cadeira_id>")
 
 api.add_resource(UserRegister, "/register")
 api.add_resource(User, "/user/<int:user_id>")

@@ -6,18 +6,20 @@
     <h2>Listagem de Cadeiras</h2>
     <form class="form-inline" style="float: right" method="post" action="admCadeiras">
         <div class="form-group">
-            <label for="filter" class="mb-2 mr-sm-2">Filtragem por Cursos:</label>
-            <select id="filter" class="form-control mb-2 mr-sm-2">
-                <option selected>Todos</option>
+            <label for="curso" class="mb-2 mr-sm-2">Filtragem por Cursos:</label>
+            <select id="curso" name="curso" class="form-control mb-2 mr-sm-2">
+                <option value="">Todos</option>
                 {% for result in data["cursos"] %}
-                    <option>{{ result["name"] }}</option>
+                    <option value="{{ result["curso_id"] }}">
+                        {{ result["name"] }}
+                    </option>
                 {% endfor %}
             </select>
         </div>
         <div class="form-group">
             <label class="sr-only" for="procurar">Procurar</label>
-            <input type="text" name="procurar" class="form-control mb-2 mr-sm-2" id="procurar"
-                   value="{% if data["form"] is defined %}{{ data["form"] }}{% endif %}">
+            <input type="text" name="search" class="form-control mb-2 mr-sm-2" id="procurar"
+                   value="{% if data["search"] is defined %}{{ data["search"] }}{% endif %}">
             <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
         </div>
     </form>
@@ -32,28 +34,17 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>1</td>
-            <td>Engenharia Informática</td>
-            <td>Engenharia de Software</td>
-            <td>
-                <a class="add btn btn-success text-white" title="Guardar" data-toggle="tooltip"
-                   style="display:none">
-                    <i class="far fa-save"></i>
-                </a>
-                <a class="edit btn btn-warning text-white" title="Editar" data-toggle="tooltip">
-                    <i class="fas fa-edit"></i>
-                </a>
-                <a class="delete btn btn-danger" title="Eliminar" alt="1"
-                   data-toggle="tooltip">
-                    <i class="fas fa-trash-alt"></i>
-                </a>
-            </td>
-        </tr>
+
         {% for result in data["cadeiras"] %}
             <tr>
-                <td>{{ result["cadeiras_id"] }}</td>
-                <td>{# Curso #}</td>
+                <td>{{ result["cadeira_id"] }}</td>
+                <td>
+                    {% for dcurso in data["cursos"] %}
+                        {% if dcurso["curso_id"] == result["curso_id"] %}
+                            {{ dcurso["name"] }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
                 <td>{{ result["name"] }}</td>
                 <td>
                     <a class="add btn btn-success text-white" title="Guardar" data-toggle="tooltip"
@@ -63,7 +54,7 @@
                     <a class="edit btn btn-warning text-white" title="Editar" data-toggle="tooltip">
                         <i class="fas fa-edit"></i>
                     </a>
-                    <a class="delete btn btn-danger" title="Eliminar" alt="{{ result["curso_id"] }}"
+                    <a class="delete btn btn-danger" title="Eliminar" alt="{{ result["curso_id"] }}.{{ result["cadeira_id"] }}"
                        data-toggle="tooltip">
                         <i class="fas fa-trash-alt"></i>
                     </a>
