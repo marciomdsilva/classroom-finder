@@ -113,7 +113,7 @@
                     html += '</select>';
                     $(this).html(html);
                 } else
-                    $(this).html('<input type="text" name="name" class="form-control" value="' + $(this).text() + '">');
+                    $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
             });
             $(this).parents("tr").find(".add, .edit").toggle();
             $(".add-new").attr("disabled", "disabled");

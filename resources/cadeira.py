@@ -146,9 +146,7 @@ class CadeiraGeral(Resource):
     @classmethod
     @fresh_jwt_required
     def post(cls):
-        print("aaaa")
         cadeira_json = request.get_json()
-        print(cadeira_json)
         name = cadeira_json["name"]
         curso_id = cadeira_json["curso_id"]
 

@@ -1,5 +1,9 @@
 <script>
     $(document).ready(function () {
+        {% if data["curso"] is defined  %}
+            document.getElementById("curso").value = "{{ data["curso"] }}"
+        {% endif %}
+
         $('[data-toggle="tooltip"]').tooltip();
         var actions = $("#buttonsDefault").html();
         // Append table with add row form on add new button click
@@ -8,7 +12,9 @@
             var index = $("table tbody tr:last-child").index();
             var row = '<tr>' +
                 '<td><input type="text" class="form-control" name="newId" disabled></td>' +
-                '<td><input type="text" class="form-control" name="newNome" ></td>' +
+                '<td><input type="text" class="form-control" name="newIdentificacao" ></td>' +
+                '<td><input type="text" class="form-control" name="newAndar" ></td>' +
+                '<td><input type="text" class="form-control" name="newLotacao" ></td>' +
                 '<td>' + actions + '</td>' +
                 '</tr>';
             $("table").append(row);
@@ -19,6 +25,8 @@
         $(document).on("click", ".add", function () {
             var empty = false;
             var input = $(this).parents("tr").find('input[type="text"]');
+            var select = $(this).parents("tr").find('select');
+
             input.each(function (k) {
                 if (k != 0)
                     if (!$(this).val()) {
@@ -34,7 +42,7 @@
             if (!empty) {
                 let method;
                 let data;
-                let url = "http://localhost:5000/cursos_";
+                let url = "http://localhost:5000/salas_";
                 let tr = this.parentElement.parentElement;
                 if (tr.children[0].firstChild.name == 'newId') {
                     method = "POST";
@@ -42,7 +50,11 @@
                     url = url + "/" + tr.children[0].firstChild.value;
                     method = "PUT";
                 }
-                data = {"name": tr.children[1].firstChild.value}
+                data = {
+                    "andar": tr.children[2].firstChild.value,
+                    "identificacao": tr.children[1].firstChild.value,
+                    "lotacao": tr.children[3].firstChild.value,
+                }
                 fetch(url, {
                     method: method, // or 'PUT'
                     headers: {
@@ -56,16 +68,22 @@
                         if (response.status == 200 || response.status == 201) {
                             input.each(function (k) {
                                 if (k == 0)
-                                    $(this).parent("td").html(data['curso_id']);
-
+                                    $(this).parent("td").html(data['cadeira_id']);
                                 else
                                     $(this).parent("td").html($(this).val());
-                            });
+                            })
+
+                            $(select).prop("disabled",true)
+                            {% for result in data["cursos"] %}
+                                if (data['curso_id'] == '{{ result["curso_id"] }}' )
+                                    $(select).parent("td").html("{{ result["name"] }}");
+
+                            {% endfor %}
+
                             $(this).parents("tr").find(".add, .edit").toggle();
                             $(".add-new").removeAttr("disabled");
                             if (method == "POST")
-                                 $(this).parents("tr").find(".delete")[0].setAttribute("alt",data['curso_id'])
-                            console.log(response.status)
+                                $(this).parents("tr").find(".delete")[0].setAttribute("alt", data['curso_id'] + "." + data['cadeira_id'])
                         } else
                             alert("Status " + response.status + " - " + response.statusText + " " + data["message"]);
                     });
@@ -76,11 +94,12 @@
         });
         // Edit row on edit button click
         $(document).on("click", ".edit", function () {
+            let curso_id = $(this).parents("tr").find(".delete")[0].attributes.getNamedItem("alt").value.split(".")[0];
             $(this).parents("tr").find("td:not(:last-child)").each(function (k) {
                 if (k == 0)
                     $(this).html('<input type="text" name="id" class="form-control" value="' + $(this).text() + '" disabled>');
                 else
-                    $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
+                    $(this).html('<input type="text" name="name" class="form-control" value="' + $(this).text() + '">');
             });
             $(this).parents("tr").find(".add, .edit").toggle();
             $(".add-new").attr("disabled", "disabled");
@@ -93,7 +112,8 @@
                 $(".add-new").removeAttr("disabled");
                 return;
             }
-            let url = "http://localhost:5000/cursos_/" + this.attributes.getNamedItem("alt").value;
+
+            let url = "http://localhost:5000/salas_/" + this.attributes.getNamedItem("alt").value.split(".")[1];
             fetch(url, {
                 method: "DELETE", // or 'PUT'
                 headers: {

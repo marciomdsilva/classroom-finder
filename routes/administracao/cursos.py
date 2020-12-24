@@ -30,20 +30,5 @@ def admCursosTab():
         return redirect("/")
 
 
-@admCursos.route('/admCursos/criar')
-def admCursosCriar():
-    returnRedirect = confirmCredentials(1, 1)
-    if returnRedirect != "":
-        return redirect(returnRedirect)
 
-    return render_template('administracao/cursos/cursoCriar.html')
-
-
-@admCursos.route('/admCursos/editar')
-def admCursosEditar():
-    returnRedirect = confirmCredentials(1, 1)
-    if returnRedirect != "":
-        return redirect(returnRedirect)
-
-    return
 
