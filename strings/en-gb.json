@@ -21,6 +21,11 @@
   "curso_deleted": "Curso deleted.",
   "curso_dependency": "There are subjects associated with this course. Impossible to eliminate!",
 
+  "sala_error_inserting": "An error occurred while inserting the sala.",
+  "sala_error_editing": "An error occurred while editing the sala.",
+  "sala_not_found": "Sala not found.",
+  "sala_deleted": "Sala deleted.",
+
   "user_username_exists": "A user with that username already exists.",
   "user_email_exists": "A user with that email already exists.",
   "user_not_found": "User not found.",

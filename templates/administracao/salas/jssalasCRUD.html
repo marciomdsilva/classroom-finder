@@ -68,22 +68,15 @@
                         if (response.status == 200 || response.status == 201) {
                             input.each(function (k) {
                                 if (k == 0)
-                                    $(this).parent("td").html(data['cadeira_id']);
+                                    $(this).parent("td").html(data['sala_id']);
                                 else
                                     $(this).parent("td").html($(this).val());
                             })
 
-                            $(select).prop("disabled",true)
-                            {% for result in data["cursos"] %}
-                                if (data['curso_id'] == '{{ result["curso_id"] }}' )
-                                    $(select).parent("td").html("{{ result["name"] }}");
-
-                            {% endfor %}
-
                             $(this).parents("tr").find(".add, .edit").toggle();
                             $(".add-new").removeAttr("disabled");
                             if (method == "POST")
-                                $(this).parents("tr").find(".delete")[0].setAttribute("alt", data['curso_id'] + "." + data['cadeira_id'])
+                                $(this).parents("tr").find(".delete")[0].setAttribute("alt", data['sala_id'])
                         } else
                             alert("Status " + response.status + " - " + response.statusText + " " + data["message"]);
                     });
@@ -113,7 +106,7 @@
                 return;
             }
 
-            let url = "http://localhost:5000/salas_/" + this.attributes.getNamedItem("alt").value.split(".")[1];
+            let url = "http://localhost:5000/salas_/" + this.attributes.getNamedItem("alt").value;
             fetch(url, {
                 method: "DELETE", // or 'PUT'
                 headers: {
@@ -125,6 +118,7 @@
                     if (response.status == 200 || response.status == 201) {
                         $(this).parents("tr").remove();
                         $(".add-new").removeAttr("disabled");
+                        $(".bs-tooltip-top").removeClass("show").addClass("hide");
                     } else
                         alert("Status " + response.status + " - " + response.statusText + " " + data["message"]);
                 });

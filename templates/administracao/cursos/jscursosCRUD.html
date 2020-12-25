@@ -105,6 +105,7 @@
                     if (response.status == 200 || response.status == 201) {
                         $(this).parents("tr").remove();
                         $(".add-new").removeAttr("disabled");
+                        $(".bs-tooltip-top").removeClass("show").addClass("hide");
                     } else
                         alert("Status " + response.status + " - " + response.statusText + " " + data["message"]);
                 });

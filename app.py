@@ -11,6 +11,7 @@ from resources.user import UserRegister, User, UserLogin, UserLogout, TokenRefre
 from resources.confirmation import Confirmation, ConfirmationByUser
 from resources.cadeira import Cadeira, CadeiraList, CadeiraId, CadeiraGeral
 from resources.curso import Curso, CursoList, CursoId, CursoGeral
+from resources.sala import SalaId, SalaGeral
 
 from routes.main import main
 from routes.administracao.cadeiras import admCadeiras
@@ -117,6 +118,9 @@ api.add_resource(Cadeira, "/cadeira")
 api.add_resource(CadeiraList, "/cadeiras")
 api.add_resource(CadeiraGeral, "/cadeiras_")
 api.add_resource(CadeiraId, "/cadeiras_/<int:cadeira_id>")
+
+api.add_resource(SalaGeral, "/salas_")
+api.add_resource(SalaId, "/salas_/<int:sala_id>")
 
 api.add_resource(UserRegister, "/register")
 api.add_resource(User, "/user/<int:user_id>")
