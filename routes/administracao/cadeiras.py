@@ -37,3 +37,22 @@ def admCadeirasTab():
         return render_template('administracao/cadeiras/listagem.html', data=data)
     else:
         return redirect("/")
+
+@admCadeiras.route('/admCadeiras/<cadeiraID>')
+def admCadeirasView(cadeiraID):
+    returnRedirect = confirmCredentials(1, 1)
+    if returnRedirect != "":
+        return redirect(returnRedirect)
+    data = {}
+
+    url = "http://127.0.0.1:5000//cadeiras_/" + cadeiraID
+    headers = {
+        'Authorization': 'Bearer ' + session['access_token'],
+    }
+    r = requests.request("GET", url, headers=headers, data={})
+
+    if r.status_code == 200:
+        data["cadeira"] = r.json()
+        return render_template('administracao/cadeiras/horarioCadeira.html', data=data)
+    else:
+        return redirect("/")

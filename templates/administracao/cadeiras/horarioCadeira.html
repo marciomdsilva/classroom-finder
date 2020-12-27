@@ -1,0 +1,146 @@
+{% extends 'template.html' %}
+
+{% block content %}
+
+    <h1>Horários - {{ data["cadeira"]["name"] }}</h1>
+
+    <div class="bs-example">
+        <div class="accordion" id="accordionExample">
+            <div class="card">
+                <div class="card-header bg-info" id="headingOne">
+                    <button type="accordion-button" class="btn text-white" data-toggle="collapse"
+                            data-target="#collapseOne" aria-expanded="true">
+                        Criação de Horários
+                    </button>
+                </div>
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                     data-parent="#accordionExample">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="diaSemForm" class="form-label">Dia Semana</label>
+                                <select id="diaSemForm" class="form-control mb-2 mr-sm-2">
+                                    <option selected></option>
+                                    <option value="1">Domingo</option>
+                                    <option value="2">Segunda-Feira</option>
+                                    <option value="3">Terça-Feira</option>
+                                    <option value="4">Quarta-Feira</option>
+                                    <option value="5">Quinta-Feira</option>
+                                    <option value="6">Sexta-Feira</option>
+                                    <option value="7">Sábado</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="salaForm" class="form-label">Sala</label>
+                                <select id="salaForm" class="form-control mb-2 mr-sm-2">
+                                    <option selected>Salas...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="horaInicio" class="form-label">Hora Início</label>
+                                <input id="horaInicio" type="text" class="form-control" placeholder="00:00">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="horaFim" class="form-label">Hora Fim</label>
+                                <input id="horaFim" type="text" class="form-control" placeholder="00:00">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label class="form-label" style="margin-top: 40px">Periodo Aplicável</label>
+                            </div>
+                            <div class="col-md-5">
+                                <label for="tempoAplicavel" class="form-label">Início</label>
+                                <input id="tempoAplicavel" type="text" class="form-control" placeholder="dd/mm/yyyy">
+                            </div>
+                            <div class="col-md-5">
+                                <label for="tempoAplicavelF" class="form-label">Fim</label>
+                                <input id="tempoAplicavelF" type="text" class="form-control" placeholder="dd/mm/yyyy">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <a class="add btn btn-success text-white" title="Guardar" data-toggle="tooltip"
+                                   style="float: right; margin-top: 20px">
+                                    <i class="far fa-save"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="accordion" id="accordionExample">
+        <div class="card" style="margin-top: 30px;">
+            <div class="card-header bg-info" id="headingTwo">
+                <button type="accordion-button" class="btn text-white" data-toggle="collapse" data-target="#collapseTwo"
+                        aria-expanded="false">
+                    Horário 1 Exemplo
+                </button>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                 data-parent="#accordionExample">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="diaSemForm" class="form-label">Dia Semana</label>
+                            <select id="diaSemForm" class="form-control mb-2 mr-sm-2" disabled>
+                                <option selected>Segunda-Feira</option>
+                                <option value="1">Domingo</option>
+                                <option value="2">Segunda-Feira</option>
+                                <option value="3">Terça-Feira</option>
+                                <option value="4">Quarta-Feira</option>
+                                <option value="5">Quinta-Feira</option>
+                                <option value="6">Sexta-Feira</option>
+                                <option value="7">Sábado</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="salaForm" class="form-label">Sala</label>
+                            <select id="salaForm" class="form-control mb-2 mr-sm-2" disabled>
+                                <option selected>Sala 10</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="horaInicio" class="form-label">Hora Início</label>
+                            <input id="horaInicio" type="text" class="form-control" placeholder="21:30" disabled>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="horaFim" class="form-label">Hora Fim</label>
+                            <input id="horaFim" type="text" class="form-control" placeholder="23:20" disabled>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label class="form-label" style="margin-top: 40px">Periodo Aplicável</label>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="tempoAplicavel" class="form-label">Início</label>
+                            <input id="tempoAplicavel" type="text" class="form-control"
+                                   placeholder="14/09/2020" disabled>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="tempoAplicavelF" class="form-label">Fim</label>
+                            <input id="tempoAplicavelF" type="text" class="form-control"
+                                   placeholder="31/01/2021" disabled>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <a class="delete btn btn-danger" title="Eliminar" data-toggle="tooltip"
+                               style="float: right; margin-top: 20px">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <a class="back btn btn-primary" title="Back" data-toggle="tooltip" style="float: right; margin-top: 20px"
+       href="/admCadeiras">Retroceder</a>
+{% endblock %}
+
