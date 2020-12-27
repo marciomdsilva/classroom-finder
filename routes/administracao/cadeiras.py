@@ -38,7 +38,8 @@ def admCadeirasTab():
     else:
         return redirect("/")
 
-@admCadeiras.route('/admCadeiras/<cadeiraID>')
+
+@admCadeiras.route('/admCadeiras/<cadeiraID>', methods=['GET'])
 def admCadeirasView(cadeiraID):
     returnRedirect = confirmCredentials(1, 1)
     if returnRedirect != "":
@@ -46,6 +47,7 @@ def admCadeirasView(cadeiraID):
     data = {}
 
     url = "http://127.0.0.1:5000//cadeiras_/" + cadeiraID
+
     headers = {
         'Authorization': 'Bearer ' + session['access_token'],
     }
@@ -57,9 +59,55 @@ def admCadeirasView(cadeiraID):
     }
     r1 = requests.request("GET", url, headers=headers, data={})
 
-    if r.status_code == 200:
+    url = "http://127.0.0.1:5000//horarios_/" + cadeiraID
+    headers = {
+        'Authorization': 'Bearer ' + session['access_token'],
+    }
+    r2 = requests.request("GET", url, headers=headers, data={})
+
+    if r.status_code == 200 and r1.status_code == 200 and r2.status_code == 200:
         data["cadeira"] = r.json()
         data["salas"] = r1.json()["salas"]
+        data["horarios"] = r2.json()
         return render_template('administracao/cadeiras/horarioCadeira.html', data=data)
     else:
         return redirect("/")
+
+
+@admCadeiras.route('/admCadeiras/<cadeiraID>', methods=['POST'])
+def admCadeirasViewCreate(cadeiraID):
+    returnRedirect = confirmCredentials(1, 1)
+    if returnRedirect != "":
+        return redirect(returnRedirect)
+
+    url = "http://127.0.0.1:5000//horarios_"
+    data = {}
+
+    data["cadeira_id"] = cadeiraID
+    data["sala_id"] = request.form.get("salaForm")
+    data["horainicio"] = request.form.get("horaInicio")
+    data["horafim"] = request.form.get("horaFim")
+    data["diaSemana"] = request.form.get("diaSemForm")
+    data["datainicio"] = request.form.get("dataInicio")
+    data["datafim"] = request.form.get("dataFim")
+    # data["cadeira_id"] = request.form.get("procurar")
+    print(data)
+
+    payload = json.dumps(data)
+
+    headers = {
+        'Authorization': 'Bearer ' + session['access_token'],
+    }
+    r = requests.request("POST", url, headers=headers, data=payload)
+    print(r.status_code)
+    print(r.json())
+
+    return redirect("/admCadeiras/" + cadeiraID)
+
+
+# @admCadeiras.route('/admCadeiras/<cadeiraID>/delete')
+# def admCadeirasView(cadeiraID):
+#     returnRedirect = confirmCredentials(1, 1)
+#     if returnRedirect != "":
+#         return redirect(returnRedirect)
+#     data = {}
