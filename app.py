@@ -11,7 +11,7 @@ from resources.cadeira import Cadeira, CadeiraList, CadeiraId, CadeiraGeral
 from resources.curso import Curso, CursoList, CursoId, CursoGeral
 from resources.horario import HorarioId, HorarioGeral
 from resources.sala import SalaId, SalaGeral
-from resources.user import UserRegister, User, UserLogin, UserLogout, TokenRefresh
+from resources.user import UserRegister, User,UserGeral, UserLogin, UserLogout, TokenRefresh
 from resources.confirmation import Confirmation, ConfirmationByUser
 
 from routes.main import main
@@ -128,6 +128,7 @@ api.add_resource(HorarioGeral, "/horarios_")
 
 api.add_resource(UserRegister, "/register")
 api.add_resource(User, "/user/<int:user_id>")
+api.add_resource(UserGeral, "/user")
 api.add_resource(UserLogin, "/login")
 api.add_resource(UserLogout, "/logout")
 api.add_resource(TokenRefresh, "/refresh")

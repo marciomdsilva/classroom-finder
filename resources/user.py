@@ -22,6 +22,7 @@ from libs.strings import gettext
 from models.confirmation import ConfirmationModel
 
 user_schema = UserSchema()
+user_list_schema = UserSchema(many=True)
 
 
 class UserRegister(Resource):
@@ -113,6 +114,14 @@ class User(Resource):
             return {"message": gettext("user_not_found")}, 404
         user.delete_from_db()
         return {"message": gettext("user_deleted")}, 200
+
+class UserGeral(Resource):
+    @classmethod
+    def get(cls):
+        if len(request.args) == 0 or (request.args.get("search") is None and request.args.get("search") is None):
+            return {"users": user_list_schema.dump(UserModel.find_all())}, 200
+        else:
+            return {"users": user_list_schema.dump(UserModel.find_all(request.args['search']))}, 200
 
 
 class UserLogin(Resource):

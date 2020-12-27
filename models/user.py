@@ -1,6 +1,8 @@
 from flask import request, url_for
 from requests import Response
+from sqlalchemy import or_
 from sqlalchemy.orm import relationship
+from typing import List
 
 from db import db
 from libs.mailgun import Mailgun
@@ -48,6 +50,13 @@ class UserModel(db.Model):
     @classmethod
     def find_by_id(cls, _id: int) -> "UserModel":
         return cls.query.filter_by(id=_id).first()
+
+    @classmethod
+    def find_all(cls, search: str = None) -> List["UserModel"]:
+        if search is None:
+            return cls.query.all()
+        else:
+            return cls.query.filter(or_(UserModel.name.contains(search), UserModel.email.contains(search), UserModel.username.contains(search)))
 
     def send_confirmation_email(self) -> Response:
         # http://127.0.0.1:5000 - /  +   /user_confirm/<id>
