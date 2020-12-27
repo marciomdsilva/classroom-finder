@@ -1,7 +1,6 @@
 from typing import List
 from db import db
 
-
 class CadeiraModel(db.Model):
     __tablename__ = "cadeiras"
 
@@ -10,6 +9,7 @@ class CadeiraModel(db.Model):
 
     curso_id = db.Column(db.Integer,    db.ForeignKey("cursos.curso_id"), nullable=False)
     curso = db.relationship("CursoModel")
+
 
     @classmethod
     def find_by_name(cls, name: str) -> "CadeiraModel":

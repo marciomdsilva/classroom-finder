@@ -10,6 +10,9 @@ class SalaModel(db.Model):
     andar = db.Column(db.Integer, nullable=False)
     lotacao = db.Column(db.Integer, nullable=False)
 
+    #
+    # horario = db.relationship("HorarioModel")
+
     @classmethod
     def find_by_name(cls, identificacao: str) -> "SalaModel":
         return cls.query.filter_by(identificacao=identificacao).first()  # SELECT * FROM items Where name=name LIMIT 1

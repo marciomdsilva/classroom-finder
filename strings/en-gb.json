@@ -21,6 +21,12 @@
   "curso_deleted": "Curso deleted.",
   "curso_dependency": "There are subjects associated with this course. Impossible to eliminate!",
 
+  "horarios_error_inserting": "An error occurred while inserting the horarios.",
+  "horarios_not_found": "Horarios not found.",
+  "horarios_deleted": "Horarios deleted.",
+  "horarios_inserted": "Horarios inserted.",
+  "horarios_dependency": "There are subjects associated with this horarios. Impossible to eliminate!",
+
   "sala_error_inserting": "An error occurred while inserting the sala.",
   "sala_error_editing": "An error occurred while editing the sala.",
   "sala_not_found": "Sala not found.",
