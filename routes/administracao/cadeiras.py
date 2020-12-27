@@ -51,8 +51,15 @@ def admCadeirasView(cadeiraID):
     }
     r = requests.request("GET", url, headers=headers, data={})
 
+    url = "http://127.0.0.1:5000//salas_"
+    headers = {
+        'Authorization': 'Bearer ' + session['access_token'],
+    }
+    r1 = requests.request("GET", url, headers=headers, data={})
+
     if r.status_code == 200:
         data["cadeira"] = r.json()
+        data["salas"] = r1.json()["salas"]
         return render_template('administracao/cadeiras/horarioCadeira.html', data=data)
     else:
         return redirect("/")

@@ -21,19 +21,24 @@
                                 <label for="diaSemForm" class="form-label">Dia Semana</label>
                                 <select id="diaSemForm" class="form-control mb-2 mr-sm-2">
                                     <option selected></option>
-                                    <option value="1">Domingo</option>
-                                    <option value="2">Segunda-Feira</option>
-                                    <option value="3">Terça-Feira</option>
-                                    <option value="4">Quarta-Feira</option>
-                                    <option value="5">Quinta-Feira</option>
-                                    <option value="6">Sexta-Feira</option>
-                                    <option value="7">Sábado</option>
+                                    <option value="0">Domingo</option>
+                                    <option value="1">Segunda-Feira</option>
+                                    <option value="2">Terça-Feira</option>
+                                    <option value="3">Quarta-Feira</option>
+                                    <option value="4">Quinta-Feira</option>
+                                    <option value="5">Sexta-Feira</option>
+                                    <option value="6">Sábado</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
                                 <label for="salaForm" class="form-label">Sala</label>
                                 <select id="salaForm" class="form-control mb-2 mr-sm-2">
-                                    <option selected>Salas...</option>
+                                    <option selected></option>
+                                    {% for result in data["salas"] %}
+                                        <option value="{{ result["sala_id"] }}">
+                                            {{ result["identificacao"] }}
+                                        </option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             <div class="col-md-3">
