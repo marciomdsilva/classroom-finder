@@ -7,12 +7,12 @@ from marshmallow import ValidationError
 from ma import ma
 from db import db
 from blacklist import BLACKLIST
-from resources.user import UserRegister, User, UserLogin, UserLogout, TokenRefresh
-from resources.confirmation import Confirmation, ConfirmationByUser
 from resources.cadeira import Cadeira, CadeiraList, CadeiraId, CadeiraGeral
 from resources.curso import Curso, CursoList, CursoId, CursoGeral
 from resources.horario import HorarioId, HorarioGeral
 from resources.sala import SalaId, SalaGeral
+from resources.user import UserRegister, User, UserLogin, UserLogout, TokenRefresh
+from resources.confirmation import Confirmation, ConfirmationByUser
 
 from routes.main import main
 from routes.administracao.cadeiras import admCadeiras

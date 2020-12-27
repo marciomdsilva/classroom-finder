@@ -1,3 +1,4 @@
+import copy
 import traceback
 from flask_restful import Resource
 from flask import request
@@ -8,8 +9,11 @@ from flask_jwt_extended import (
     jwt_refresh_token_required,
     get_jwt_identity,
     jwt_required,
-    get_raw_jwt,
+    get_raw_jwt, get_jwt_claims,
 )
+
+from models.cadeira import CadeiraModel
+from models.curso import CursoModel
 from models.user import UserModel
 from schemas.user import UserSchema
 from blacklist import BLACKLIST
@@ -23,7 +27,12 @@ user_schema = UserSchema()
 class UserRegister(Resource):
     @classmethod
     def post(cls):
-        user = user_schema.load(request.get_json())
+        userData = copy.deepcopy(request.get_json())
+        if 'cursos' in userData:
+            del userData['cursos']
+        if 'cadeiras' in userData:
+            del userData['cadeiras']
+        user = user_schema.load(userData)
 
         if UserModel.find_by_username(user.username):
             return {"message": gettext("user_username_exists")}, 400
@@ -32,6 +41,12 @@ class UserRegister(Resource):
             return {"message": gettext("user_email_exists")}, 400
 
         try:
+            if 'cursos' in request.get_json():
+                for curso in request.get_json()['cursos']:
+                    user.cursos.append(CursoModel.find_by_id(curso))
+            if 'cadeiras' in request.get_json():
+                for cadeira in request.get_json()['cadeiras']:
+                    user.cadeiras.append(CadeiraModel.find_by_id(cadeira))
             user.save_to_db()
 
             confirmation = ConfirmationModel(user.id)
@@ -49,6 +64,37 @@ class UserRegister(Resource):
 
 class User(Resource):
     @classmethod
+    @jwt_required
+    def put(cls, user_id: int):
+        claims = get_jwt_claims()
+        if not claims["access"] or claims["access"] != 2:
+            return {"message": "Admin previlege required"}, 401
+
+        user = UserModel.find_by_id(user_id)
+        if user:
+            if 'cursos' in request.get_json():
+                user.cursos.clear()
+                for curso in request.get_json()['cursos']:
+                    user.cursos.append(CursoModel.find_by_id(curso))
+
+            if 'cadeiras' in request.get_json():
+                user.cadeiras.clear()
+                for cadeira in request.get_json()['cadeiras']:
+                    user.cadeiras.append(CadeiraModel.find_by_id(cadeira))
+
+            if 'name' in request.get_json():
+                user.name = request.get_json()['name']
+            if 'password' in request.get_json():
+                user.password = request.get_json()['password']
+            if 'access' in request.get_json():
+                user.access = request.get_json()['access']
+
+            user.save_to_db()
+            return user_schema.dump(user), 200
+        else:
+            return {"message": gettext("user_not_found")}, 404
+
+    @classmethod
     def get(cls, user_id: int):
         user = UserModel.find_by_id(user_id)
         if not user:
@@ -56,7 +102,12 @@ class User(Resource):
         return user_schema.dump(user), 200
 
     @classmethod
+    @jwt_required
     def delete(cls, user_id: int):
+        claims = get_jwt_claims()
+        if not claims["access"] or claims["access"] != 2:
+            return {"message": "Admin previlege required"}, 401
+
         user = UserModel.find_by_id(user_id)
         if not user:
             return {"message": gettext("user_not_found")}, 404

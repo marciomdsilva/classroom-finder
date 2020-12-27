@@ -1,10 +1,21 @@
 from flask import request, url_for
 from requests import Response
+from sqlalchemy.orm import relationship
 
 from db import db
 from libs.mailgun import Mailgun
 from models.confirmation import ConfirmationModel
 
+
+userCursos = db.Table('userCursos', db.Model.metadata,
+    db.Column('id', db.Integer, db.ForeignKey('users.id')),
+    db.Column('curso_id', db.Integer, db.ForeignKey('cursos.curso_id'))
+)
+
+userCadeiras = db.Table('userCadeiras', db.Model.metadata,
+    db.Column('id', db.Integer, db.ForeignKey('users.id')),
+    db.Column('cadeira_id', db.Integer, db.ForeignKey('cadeiras.cadeira_id'))
+)
 
 class UserModel(db.Model):
     __tablename__ = "users"
@@ -16,6 +27,10 @@ class UserModel(db.Model):
     name = db.Column(db.String(80), nullable=False)
     access = db.Column(db.Integer, nullable=False, default=0)  # 0=>aluno, 1=>professor, 2=>administracao
 
+    cursos = relationship("CursoModel",
+                    secondary=userCursos)
+    cadeiras = relationship("CadeiraModel",
+                    secondary=userCadeiras)
     confirmation = db.relationship("ConfirmationModel", lazy="dynamic", cascade="all, delete-orphan")
 
     @property
