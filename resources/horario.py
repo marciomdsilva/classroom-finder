@@ -23,8 +23,13 @@ class HorarioId(Resource):
     @jwt_optional
     def get(cls, id: int):  # CADEIRA ID
         horarios = HorarioModal.find_by_cadeira(id)
+
         if horarios:
-            return horario_list_schema.dump(horarios), 200
+            data = horario_list_schema.dump(horarios)
+            for d in data:
+                x = d['data'].split("/")
+                d['data'] = x[2] + "/" + x[1] + "/" + x[0]
+            return horario_list_schema.dump(data), 200
         return {"message": gettext("horarios_not_found")}, 404
 
     @classmethod

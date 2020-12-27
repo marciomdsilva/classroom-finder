@@ -90,24 +90,30 @@ def admCadeirasViewCreate(cadeiraID):
     data["diaSemana"] = request.form.get("diaSemForm")
     data["datainicio"] = request.form.get("dataInicio")
     data["datafim"] = request.form.get("dataFim")
-    # data["cadeira_id"] = request.form.get("procurar")
-    print(data)
 
     payload = json.dumps(data)
-
     headers = {
         'Authorization': 'Bearer ' + session['access_token'],
+        'Content-Type': 'application/json'
     }
     r = requests.request("POST", url, headers=headers, data=payload)
-    print(r.status_code)
-    print(r.json())
+
 
     return redirect("/admCadeiras/" + cadeiraID)
 
 
-# @admCadeiras.route('/admCadeiras/<cadeiraID>/delete')
-# def admCadeirasView(cadeiraID):
-#     returnRedirect = confirmCredentials(1, 1)
-#     if returnRedirect != "":
-#         return redirect(returnRedirect)
-#     data = {}
+@admCadeiras.route('/admCadeiras/<cadeiraID>/delete/<horarioId>')
+def admCadeirasDeleteHorario(cadeiraID,horarioId):
+    returnRedirect = confirmCredentials(1, 1)
+    if returnRedirect != "":
+        return redirect(returnRedirect)
+
+    url = "http://127.0.0.1:5000//horarios_/"+horarioId
+
+    headers = {
+        'Authorization': 'Bearer ' + session['access_token'],
+    }
+
+    response = requests.request("DELETE", url, headers=headers, data={})
+
+    return redirect("/admCadeiras/" + cadeiraID)

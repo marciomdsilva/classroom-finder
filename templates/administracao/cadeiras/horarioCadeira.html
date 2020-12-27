@@ -42,12 +42,12 @@
                                 <div class="col-md-3">
                                     <label for="horaInicio" class="form-label">Hora Início</label>
                                     <input name="horaInicio" id="horaInicio" type="text" class="form-control"
-                                           placeholder="00:00">
+                                           placeholder="00:00" required>
                                 </div>
                                 <div class="col-md-3">
                                     <label for="horaFim" class="form-label">Hora Fim</label>
                                     <input name="horaFim" id="horaFim" type="text" class="form-control"
-                                           placeholder="00:00">
+                                           placeholder="00:00" required>
                                 </div>
                             </div>
                             <div class="row">
@@ -57,12 +57,12 @@
                                 <div class="col-md-5">
                                     <label for="tempoAplicavel" class="form-label">Início</label>
                                     <input name="dataInicio" id="tempoAplicavel" type="text" class="form-control"
-                                           placeholder="dd/mm/yyyy">
+                                           placeholder="dd/mm/yyyy" required>
                                 </div>
                                 <div class="col-md-5">
                                     <label for="tempoAplicavelF" class="form-label">Fim</label>
                                     <input name="dataFim" id="tempoAplicavelF" type="text" class="form-control"
-                                           placeholder="dd/mm/yyyy">
+                                           placeholder="dd/mm/yyyy" required>
                                 </div>
                             </div>
                             <div class="row">
@@ -88,7 +88,23 @@
                         <button type="accordion-button" class="btn text-white" data-toggle="collapse"
                                 data-target="#collapse{{ loop.index }}"
                                 aria-expanded="false">
-                            Horário {{ horario["horario_id"] }}
+                            Horário - {% if horario["diaSemana"]== 0 %}
+                                Domingo
+                            {% elif horario["diaSemana"]== 1 %}
+                                Segunda
+                            {% elif horario["diaSemana"]== 2 %}
+                                Terça
+                            {% elif horario["diaSemana"]== 3 %}
+                                Quarta
+                            {% elif horario["diaSemana"]== 4 %}
+                                Quinta
+                            {% elif horario["diaSemana"]== 5 %}
+                                Sexta
+                            {% elif horario["diaSemana"]== 6 %}
+                                Sábado
+                            {% endif %}
+
+                            das {{ horario["horainicio"] }} ás {{ horario["horafim"] }}
                         </button>
                     </div>
                     <div id="collapse{{ loop.index }}" class="collapse" aria-labelledby="heading{{ loop.index }}"
@@ -155,7 +171,7 @@
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <a class="delete btn btn-danger" title="Eliminar" data-toggle="tooltip"
+                                    <a class="delete btn btn-danger" title="Eliminar" data-toggle="tooltip" href="/admCadeiras/{{ data["cadeira"]["cadeira_id"] }}/delete/{{ horario["horario_id"] }}"
                                        style="float: right; margin-top: 20px">
                                         <i class="fas fa-trash-alt"></i>
                                     </a>
@@ -167,7 +183,7 @@
             {% endif %}
         {% endfor %}
     </div>
-    {#    <a class="back btn btn-primary" title="Back" data-toggle="tooltip" style="float: right; margin-top: 20px"#}
-    {#       href="/admCadeiras/{{ data["cadeira"]["cadeira_id"]/delete }}">Retroceder</a>#}
+        <a class="back btn btn-primary" title="Back" data-toggle="tooltip" style="float: right; margin-top: 20px"
+           href="/admCadeiras">Voltar</a>
 {% endblock %}
 
