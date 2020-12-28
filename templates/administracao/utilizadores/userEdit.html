@@ -1,0 +1,66 @@
+{% extends 'template.html' %}
+
+
+{% block content %}
+
+    <h2>Edição de Utilizador</h2>
+
+    <form method="post" style="margin-top: 30px">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="utilizador">Utilizador</label>
+                    <input name="utilizador" id="utilizador" class="form-control" aria-labelledby="user"
+                           value="{{ data["users"]["username"] }}" disabled>
+                </div>
+                <div class="col-md-6">
+                    <label for="email">Email</label>
+                    <input name="email" id="email" class="form-control" aria-labelledby="user"
+                           value="{{ data["users"]["email"] }}" disabled>
+                </div>
+                <div class="col-md-9">
+                    <label for="nome">Nome</label>
+                    <input name="nome" id="nome" class="form-control" aria-labelledby="user"
+                           value="{{ data["users"]["name"] }}">
+                </div>
+                <div class="col-md-3">
+                    <label for="acesso">Acesso</label>
+                    <select name="acesso" id="acesso" class="form-control" aria-labelledby="user">
+                        <option value="0">Aluno</option>
+                        <option value="1">Professor</option>
+                        <option value="2">Administrativo</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="cursos">Cursos</label>
+                    <textarea name="cursos" id="cursos" class="form-control" aria-labelledby="user">
+                        {% for result in data["cursos"] %}
+                            {{ result["name"] }}
+                        {% endfor %}
+                    </textarea>
+                </div>
+                <div class="col-md-6">
+                    <label for="cadeiras">Cadeiras</label>
+                    <textarea name="cadeiras" id="cadeiras" class="form-control" aria-labelledby="user">
+                        {% for result in data["cadeiras"] %}
+                            {{ result["name"] }}
+                        {% endfor %}
+                    </textarea>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="back btn btn-primary" title="Back" data-toggle="tooltip"
+                style="float: right; margin-top: 20px"
+        >Editar
+        </button>
+        <a class="back btn btn-secondary" title="Back" data-toggle="tooltip" style="float: right; margin-top: 20px; margin-right: 10px"
+           href="/admUtilizadores">Voltar</a>
+    </form>
+
+    <script>
+        {% if data["users"]["access"] is defined  %}
+            document.getElementById("acesso").value = "{{ data["users"]["access"] }}"
+        {% endif %}
+    </script>
+
+{% endblock %}
