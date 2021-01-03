@@ -10,6 +10,51 @@ def admUtilizadoresTab():
     returnRedirect = confirmCredentials(1, 1)
     if returnRedirect != "":
         return redirect(returnRedirect)
+    data = {}
 
-    session['page'] = "admUtilizadores"
-    return render_template('administracao/utilizadores/listagem.html')
+    url = "http://127.0.0.1:5000//user"
+    headers = {
+        'Authorization': 'Bearer ' + session['access_token'],
+    }
+    r = requests.request("GET", url, headers=headers, data={})
+
+    if r.status_code == 200:
+        data["users"] = r.json()["users"]
+        session['page'] = "admUtilizadores"
+        return render_template('administracao/utilizadores/listagem.html', data=data)
+    else:
+        return redirect("/")
+
+
+@admUtilizadores.route('/admUtilizadores/<userId>')
+def admUtilizadoresEdit(userId):
+    returnRedirect = confirmCredentials(1, 1)
+    if returnRedirect != "":
+        return redirect(returnRedirect)
+    data = {}
+
+    url = "http://127.0.0.1:5000//user/1"
+    headers = {
+        'Authorization': 'Bearer ' + session['access_token'],
+    }
+    r = requests.request("GET", url, headers=headers, data={})
+
+    url = "http://127.0.0.1:5000//cursos_"
+    headers = {
+        'Authorization': 'Bearer ' + session['access_token'],
+    }
+    r1 = requests.request("GET", url, headers=headers, data={})
+
+    url = "http://127.0.0.1:5000//cadeiras_"
+    headers = {
+        'Authorization': 'Bearer ' + session['access_token'],
+    }
+    r2 = requests.request("GET", url, headers=headers, data={})
+
+    if r.status_code == 200:
+        data["users"] = r.json()
+        data["cursos"] = r1.json()["cursos"]
+        data["cadeiras"] = r2.json()["cadeiras"]
+        return render_template('administracao/utilizadores/userEdit.html', data=data)
+    else:
+        return redirect("/")
