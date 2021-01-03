@@ -12,3 +12,11 @@ body{
 .bg-whiteblue{
     background-color: #1b9ca6;
 }
+
+.weekDays {
+    border: 2px solid #f8f9fa;
+    height: 400px;
+    background-color: #007bff91;
+    border-radius: 20px;
+    padding: 0px;
+}

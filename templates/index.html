@@ -4,10 +4,42 @@
 
 
 {% block content %}
-    {{ data }}
-    <div id="canvas">
-    <script src="{{ url_for('static', filename='iiCreator/imap5customcore.js') }}" type="application/javascript"></script>
-        <script type="application/javascript">imap5custom.init({usermap:54620779,local:true,base:"",responsivemap:true});</script>
+    <div class="weekChanger row">
+        <div class="col-md-6 offset-md-3">
+            <nav aria-label="...">
+                <ul class="pagination pagination-lg">
+                    <li class="page-item">
+                        <a class="page-link" href="#" tabindex="-1">
+                            <i class="material-icons">keyboard_arrow_left</i>
+                        </a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">{{ data["datas"][0]["data"] }}
+                        - {{ data["datas"][6]["data"] }}</a></li>
+                    <li class="page-item"><a class="page-link" href="#">
+                        <i class="material-icons">keyboard_arrow_right</i>
+                    </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        {% for result in data["datas"] %}
+            <div class="col-md-4 col-lg-3 shadow-sm weekDays">
+                <div class="card-header shadow-sm">
+                    {% if data["datas"][result]["diaSemana"] == "Terã§a" %}
+                        Terça
+                    {% elif data["datas"][result]["diaSemana"] == "Sã¡bado" %}
+                        Sábado
+                    {% else %}
+                        {{ data["datas"][result]["diaSemana"] }}
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    ASD
+                </div>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}
 
