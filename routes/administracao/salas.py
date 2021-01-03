@@ -6,7 +6,7 @@ admSalas = Blueprint('admSalas', __name__, template_folder='templates')
 
 
 @admSalas.route('/admSalas' , methods=['POST','GET'])
-def admUtilizadoresTab():
+def admSalasTab():
     returnRedirect = confirmCredentials(1, 1)
     if returnRedirect != "":
         return redirect(returnRedirect)

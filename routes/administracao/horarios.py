@@ -6,7 +6,7 @@ admHorarios = Blueprint('admHorarios', __name__, template_folder='templates')
 
 
 @admHorarios.route('/admHorarios')
-def admUtilizadoresTab():
+def admHorariosTab():
     returnRedirect = confirmCredentials(1, 1)
     if returnRedirect != "":
         return redirect(returnRedirect)

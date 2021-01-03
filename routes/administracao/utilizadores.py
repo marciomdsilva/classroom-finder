@@ -62,3 +62,4 @@ def admUtilizadoresEdit(userId):
         return render_template('administracao/utilizadores/userEdit.html', data=data)
     else:
         return redirect("/")
+
