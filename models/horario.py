@@ -54,6 +54,12 @@ class HorarioModal(db.Model):
                                              HorarioModal.diaSemana.asc(), HorarioModal.sala_id.asc())
 
     @classmethod
+    def find_users_horario(self, cadeiras, datainicio, datafim):
+        return HorarioModal.query\
+            .filter(HorarioModal.data >= datainicio,HorarioModal.data <= datafim, HorarioModal.cadeira_id.in_(cadeiras))\
+            .order_by(HorarioModal.data, HorarioModal.horainicio)
+
+    @classmethod
     def getAllAssociated(self, cadeira_id, horainicio, horafim, sala_id  ) -> "HorarioModal":
         return self.query.filter_by(cadeira_id=cadeira_id, horainicio=horainicio, horafim=horafim, sala_id=sala_id)
 
