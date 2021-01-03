@@ -32,7 +32,7 @@
                        href="admUtilizadores/{{ result["id"] }}">
                         <i class="fas fa-edit"></i>
                     </a>
-                    <a class="delete btn btn-danger" title="Eliminar" alt="{{ result["id"] }}"
+                    <a class="delete btn btn-danger" title="Eliminar" onclick="deleteUser({{ result["id"] }})" id="deleteUser{{ result["id"] }}"
                        data-toggle="tooltip">
                         <i class="fas fa-trash-alt"></i>
                     </a>
@@ -44,10 +44,27 @@
 
     <button type="button" style="float: left" class="btn btn-success add-new"><i class="fa fa-plus"></i> Criar</button>
 
+    <script>
+        function deleteUser(id) {
+            let url = "http://localhost:5000/user/" + id;
+            fetch(url, {
+                method: "DELETE", // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer {{ session['access_token'] }}'
+                },
+            }).then(response => {
+                response.json().then(data => {
+                    if (response.status == 200 || response.status == 201) {
+                        document.getElementById("deleteUser"+id).parentElement.parentElement.remove()
+                    } else
+                        alert("Status " + response.status + " - " + response.statusText + " " + data["message"]);
+                });
+            }).catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
 
 {% endblock %}
 
-
-{% block scriptTags %}
-    {% include 'administracao/utilizadores/jsutilizadoresCRUD.html' %}
-{% endblock %}
