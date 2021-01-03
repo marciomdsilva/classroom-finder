@@ -1,0 +1,123 @@
+{% extends 'template.html' %}
+
+
+{% block content %}
+
+    <h2>Edição de Utilizador</h2>
+
+    <form method="post" style="margin-top: 30px" action="/admUtilizadores/create">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="utilizador">Utilizador</label>
+                    <input name="utilizador" id="utilizador" class="form-control" aria-labelledby="user">
+                </div>
+                <div class="col-md-6">
+                    <label for="email">Email</label>
+                    <input name="email" id="email" class="form-control" aria-labelledby="user">
+                </div>
+                <div class="col-md-9">
+                    <label for="nome">Nome</label>
+                    <input name="nome" id="nome" class="form-control" aria-labelledby="user">
+                </div>
+                <div class="col-md-3">
+                    <label for="acesso">Acesso</label>
+                    <select name="acesso" id="acesso" class="form-control" aria-labelledby="user">
+                        <option value="0">Aluno</option>
+                        <option value="1">Professor</option>
+                        <option value="2">Administrativo</option>
+                    </select>
+                </div>
+
+
+                <div class="col-md-12" style="padding: 30px;" id="atribCadeiras">
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            {% for result in data["cursos"] %}
+                                <a class="nav-link {% if loop.index == 1 %} active  {% endif %}"
+                                   id="nav-{{ result["curso_id"] }}-tab" data-toggle="tab"
+                                   href="#nav-{{ result["curso_id"] }}" role="tab"
+                                   aria-controls="nav-{{ result["curso_id"] }}"
+                                   aria-selected="true">{{ result["name"] }}</a>
+
+
+                            {% endfor %}
+                        </div>
+                    </nav>
+                    <div class="tab-content" id="nav-tabContent" style="background-color: #007bff1f;padding: 20px;float: left;width: 100%;">
+                        {% for result in data["cursos"] %}
+                            <div class="tab-pane fade  {% if loop.index == 1 %} show active {% endif %}"
+                                 id="nav-{{ result["curso_id"] }}"
+                                 role="tabpanel"
+                                 aria-labelledby="nav-{{ result["curso_id"] }}-tab">
+
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" onclick="clickCheck('curso{{ result["curso_id"] }}')"
+                                           value="{{ result["curso_id"] }}" name="curso[]"
+                                           id="curso{{ result["curso_id"] }}" {% if result["curso_id"]  in data["users"]["cursos"] %} checked {% endif %}>
+                                    <label class="custom-control-label"
+                                           for="curso{{ result["curso_id"] }}">Curso de {{ result["name"] }}</label>
+                                </div>
+                                <hr>
+                                <h5 style="margin-bottom:20px">Lista de cadeiras</h5>
+                                {% for resultCad in data["cadeiras"] %}
+                                    {% if result["curso_id"] == resultCad["curso_id"] %}
+                                        <div class="custom-control custom-checkbox col-md-6" style="float:left">
+                                            <input type="checkbox" class="custom-control-input" name="cadeiras[]" alt="curso{{ result["curso_id"] }}"
+                                               id="cadeira{{ resultCad["cadeira_id"] }}" value="{{ resultCad["cadeira_id"] }}"
+                                                    {% if result["curso_id"] not in data["users"]["cursos"] %} disabled {% endif %}
+                                                {% if result["curso_id"]  in data["users"]["cursos"] and  resultCad["cadeira_id"]  in data["users"]["cadeiras"] %} checked {% endif %}>
+                                            <label class="custom-control-label"
+                                                   for="cadeira{{ resultCad["cadeira_id"] }}">{{ resultCad["name"] }}</label>
+
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+
+                        {% endfor %}
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <button type="submit" class="back btn btn-success" title="Back" data-toggle="tooltip"
+                style="float: right; margin-top: 20px"
+        >Gravar
+        </button>
+        <a class="back btn btn-secondary" title="Back" data-toggle="tooltip"
+           style="float: right; margin-top: 20px; margin-right: 10px"
+           href="/admUtilizadores">Voltar</a>
+    </form>
+
+    <script>
+        {% if data["users"]["access"] is defined  %}
+            document.getElementById("acesso").value = "{{ data["users"]["access"] }}"
+        {% endif %}
+
+       if (document.getElementById("acesso").value == 2)
+           document.getElementById("atribCadeiras").style.display = "none";
+       else
+           document.getElementById("atribCadeiras").style.display = "block";
+
+        document.getElementById("acesso").addEventListener("change", function() {
+           if (this.value == 2)
+               document.getElementById("atribCadeiras").style.display = "none";
+           else
+               document.getElementById("atribCadeiras").style.display = "block";
+        })
+
+        function clickCheck(id) {
+            elemt = document.getElementById(id)
+            if (elemt.checked == true)
+            Array.from(document.querySelectorAll("input[alt='"+id+"'")).map(i=>i.disabled=false)
+            else
+            Array.from(document.querySelectorAll("input[alt='"+id+"'")).map(i=>i.disabled=true)
+        }
+
+    </script>
+
+
+
+{% endblock %}
