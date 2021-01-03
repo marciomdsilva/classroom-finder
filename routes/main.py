@@ -1,9 +1,13 @@
+import locale
 import os
+from datetime import date, datetime, timedelta
 
 import requests
 from flask import Blueprint, render_template, redirect, request, json, session
 
 main = Blueprint('main', __name__, template_folder='templates')
+
+locale.setlocale(locale.LC_TIME, 'pt_PT.UTF-8')
 
 
 @main.route('/')
@@ -66,8 +70,31 @@ def horariotab():
     if returnRedirect != "":
         return redirect(returnRedirect)
 
+    today = datetime.date(datetime.now())
+    print(today.strftime("%w"))
+    if today.strftime("%w") == '0' or today.strftime("%w") == '6':
+        dataInicio = today + timedelta(days=-today.weekday(), weeks=1)
+    elif today.strftime("%w") != '1':
+        dataInicio = today - timedelta(days=today.weekday())
+    else:
+        dataInicio = today
+
+    weekDays = {}
+
+    weekDays[0] = {}
+    weekDays[0]["data"] = dataInicio.strftime("%d/%m/%Y")
+    weekDays[0]["diaSemana"] = dataInicio.strftime("%A").split("-")[0].capitalize()
+    modified_date = dataInicio
+    for i in range(6):
+        modified_date = modified_date + timedelta(days=1)
+        weekDays[i + 1] = {}
+        weekDays[i + 1]["data"] = modified_date.strftime("%d/%m/%Y")
+        weekDays[i + 1]["diaSemana"] = modified_date.strftime("%A").split("-")[0].capitalize()
+
+    data = {}
+    data["datas"] = weekDays
     session['page'] = "horarios"
-    return render_template('index.html')
+    return render_template('index.html', data=data)
 
 
 @main.route('/mapa')
