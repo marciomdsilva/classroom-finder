@@ -140,7 +140,7 @@ class UserLogin(Resource):
             access_token = create_access_token(identity={"access": user.access, "identity": user.id}, fresh=True)
             # create refresh token
             refresh_token = create_refresh_token(user.id)
-            return {"access_token": access_token, "refresh_token": refresh_token, "access": user.access}, 200
+            return {"access_token": access_token, "refresh_token": refresh_token, "access": user.access, "userId": user.id}, 200
 
 
         return {"message": gettext("user_invalid_credentials")}, 401

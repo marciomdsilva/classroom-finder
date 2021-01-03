@@ -9,7 +9,6 @@ main = Blueprint('main', __name__, template_folder='templates')
 
 locale.setlocale(locale.LC_TIME, 'pt_PT.UTF-8')
 
-
 @main.route('/')
 def login():
     returnRedirect = confirmCredentials(0, 0)
@@ -39,6 +38,7 @@ def auth():
         session['access_token'] = response['access_token']
         session['refresh_token'] = response['refresh_token']
         session['access'] = response['access']
+        session['userId'] = response['userId']
         return redirect("/horarios")
     elif r.status_code == 401:
         return render_template("/login.html", data="Dados incorretos.")
@@ -64,20 +64,27 @@ def recuperarSendEmail():
     return render_template('login.html', data="Email enviado")
 
 
-@main.route('/horarios')
+@main.route('/horarios', methods=['GET'])
 def horariotab():
     returnRedirect = confirmCredentials(1, 0)
     if returnRedirect != "":
         return redirect(returnRedirect)
 
-    today = datetime.date(datetime.now())
-    print(today.strftime("%w"))
-    if today.strftime("%w") == '0' or today.strftime("%w") == '6':
-        dataInicio = today + timedelta(days=-today.weekday(), weeks=1)
-    elif today.strftime("%w") != '1':
-        dataInicio = today - timedelta(days=today.weekday())
+    if "data" in request.args:
+        try:
+            today = datetime.strptime(request.args.get("data"), "%d%m%Y")
+        except Exception:
+            today = datetime.date(datetime.now())
     else:
-        dataInicio = today
+        today = datetime.date(datetime.now())
+
+    if today.strftime("%w") == '0' or today.strftime("%w") == '6':
+       dataInicio = today + timedelta(days=-today.weekday(), weeks=1)
+    elif today.strftime("%w") != '1':
+       dataInicio = today - timedelta(days=today.weekday())
+    else:
+       dataInicio = today
+
 
     weekDays = {}
 
@@ -87,15 +94,34 @@ def horariotab():
     modified_date = dataInicio
     for i in range(6):
         modified_date = modified_date + timedelta(days=1)
-        weekDays[i + 1] = {}
-        weekDays[i + 1]["data"] = modified_date.strftime("%d/%m/%Y")
-        weekDays[i + 1]["diaSemana"] = modified_date.strftime("%A").split("-")[0].capitalize()
+        weekDays[i+1] = {}
+        weekDays[i+1]["data"] = modified_date.strftime("%d/%m/%Y")
+        weekDays[i+1]["diaSemana"] = modified_date.strftime("%A").split("-")[0].capitalize()
 
     data = {}
     data["datas"] = weekDays
+
+    modified_date = modified_date + timedelta(days=1)
+    data["nextWeek"] = modified_date.strftime("%d%m%Y")
+    data["prevWeek"] = (modified_date - timedelta(days=14)).strftime("%d%m%Y")
+
+
+    url = "http://127.0.0.1:5000//horarios_"
+    payload = {
+        "datainicio": weekDays[0]["data"],
+        "datafim" : weekDays[6]["data"],
+        "userId" : session['userId']
+    }
+
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + session['access_token'],
+    }
+    r = requests.request("GET", url, headers=headers, data=json.dumps(payload))
+    if r.status_code == 200:
+        data["horarios"] = r.json()
     session['page'] = "horarios"
     return render_template('index.html', data=data)
-
 
 @main.route('/mapa')
 def maptab():
@@ -104,26 +130,6 @@ def maptab():
         return redirect(returnRedirect)
 
     session['page'] = "mapa"
-    return render_template('index.html')
-
-
-@main.route('/calendario')
-def calendarTab():
-    returnRedirect = confirmCredentials(1, 0)
-    if returnRedirect != "":
-        return redirect(returnRedirect)
-
-    session['page'] = "calendario"
-    return render_template('index.html')
-
-
-@main.route('/definicoes')
-def definicoesTab():
-    returnRedirect = confirmCredentials(1, 0)
-    if returnRedirect != "":
-        return redirect(returnRedirect)
-
-    session['page'] = "definicoes"
     return render_template('index.html')
 
 
