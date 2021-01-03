@@ -5,7 +5,7 @@ from routes.main import confirmCredentials
 admUtilizadores = Blueprint('admUtilizadores', __name__, template_folder='templates')
 
 
-@admUtilizadores.route('/admUtilizadores')
+@admUtilizadores.route('/admUtilizadores', methods=['POST', 'GET'])
 def admUtilizadoresTab():
     returnRedirect = confirmCredentials(1, 1)
     if returnRedirect != "":
@@ -13,6 +13,10 @@ def admUtilizadoresTab():
     data = {}
 
     url = "http://127.0.0.1:5000//user"
+    if request.method == 'POST':
+        url = "http://127.0.0.1:5000//user?search=" + request.form.get("search")
+        data["search"] = request.form.get("search")
+
     headers = {
         'Authorization': 'Bearer ' + session['access_token'],
     }
@@ -33,7 +37,7 @@ def admUtilizadoresEdit(userId):
         return redirect(returnRedirect)
     data = {}
 
-    url = "http://127.0.0.1:5000//user/1"
+    url = "http://127.0.0.1:5000//user/" + userId
     headers = {
         'Authorization': 'Bearer ' + session['access_token'],
     }
