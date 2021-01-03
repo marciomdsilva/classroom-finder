@@ -97,7 +97,27 @@ def admUtilizadoresCreate2():
         return redirect(returnRedirect)
     data = {}
 
-    return render_template("administracao/utilizadores/userCreate.html", data=data)
+    url = "http://127.0.0.1:5000//cursos_"
+    headers = {
+        'Authorization': 'Bearer ' + session['access_token'],
+    }
+    r1 = requests.request("GET", url, headers=headers, data={})
+
+    url = "http://127.0.0.1:5000//cadeiras_"
+    headers = {
+        'Authorization': 'Bearer ' + session['access_token'],
+    }
+    r2 = requests.request("GET", url, headers=headers, data={})
+
+    if r1.status_code == 200 and r2.status_code == 200:
+        data["users"] = []
+        data["cursos"] = r1.json()["cursos"]
+        data["cadeiras"] = r2.json()["cadeiras"]
+        return render_template("administracao/utilizadores/userCreate.html", data=data)
+    else:
+        return redirect("/")
+
+
 
 
 @admUtilizadores.route('/admUtilizadores/create', methods=['POST'])
@@ -108,9 +128,11 @@ def admUtilizadoresCreate():
     data = {}
 
     url = "http://127.0.0.1:5000//register"
-
+    data["username"] = request.form.get("utilizador")
+    data["email"] = request.form.get("email")
     data["name"] = request.form.get("nome")
     data["access"] = request.form.get("acesso")
+    data["password"] = request.form.get("password")
     if (data["access"] == "2"):
         data["cursos"] = []
         data["cadeiras"] = []
@@ -120,11 +142,33 @@ def admUtilizadoresCreate():
     payload = json.dumps(data)
 
     headers = {
+        'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + session['access_token'],
     }
     r = requests.request("POST", url, headers=headers, data=payload)
 
-    if r.status_code == 200:
+    if r.status_code == 200 or r.status_code == 201:
         return redirect("/admUtilizadores")
     else:
+        dataToWeb = {}
+        dataToWeb["erro"] = r.json()["message"]
+        dataToWeb["users"] = data
+
+        url = "http://127.0.0.1:5000//cursos_"
+        headers = {
+            'Authorization': 'Bearer ' + session['access_token'],
+        }
+        r1 = requests.request("GET", url, headers=headers, data={})
+
+        url = "http://127.0.0.1:5000//cadeiras_"
+        headers = {
+            'Authorization': 'Bearer ' + session['access_token'],
+        }
+        r2 = requests.request("GET", url, headers=headers, data={})
+
+        if r1.status_code == 200 and r2.status_code == 200:
+            dataToWeb["cursos"] = r1.json()["cursos"]
+            dataToWeb["cadeiras"] = r2.json()["cadeiras"]
+            return render_template("administracao/utilizadores/userCreate.html", data=dataToWeb)
         return redirect("/")
+
