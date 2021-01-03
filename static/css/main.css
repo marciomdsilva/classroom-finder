@@ -16,7 +16,13 @@ body{
 .weekDays {
     border: 2px solid #f8f9fa;
     height: 400px;
-    background-color: #007bff91;
     border-radius: 20px;
     padding: 0px;
+    background-color: #c7e1fd91;
+}
+.card-header {
+    color:white;
+    background-color: #3998ff;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
 }
