@@ -63,3 +63,28 @@ def admUtilizadoresEdit(userId):
     else:
         return redirect("/")
 
+
+@admUtilizadores.route('/admUtilizadores/<userId>', methods=['POST'])
+def admUtilizadoresSave(userId):
+    returnRedirect = confirmCredentials(1, 1)
+    if returnRedirect != "":
+        return redirect(returnRedirect)
+    data = {}
+
+    data["name"] = request.form.get("nome")
+    data["access"] = request.form.get("acesso")
+    if (data["access"] == "2"):
+        data["cursos"] = []
+        data["cadeiras"] = []
+    else:
+        data["cursos"] = request.form.getlist("curso[]")
+        data["cadeiras"] = request.form.getlist("cadeiras[]")
+    payload = json.dumps(data)
+    url = "http://127.0.0.1:5000//user/" + userId
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + session['access_token'],
+    }
+    r = requests.request("PUT", url, headers=headers, data=payload)
+
+    return redirect("/admUtilizadores/" + userId)
