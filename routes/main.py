@@ -109,8 +109,8 @@ def horariotab():
     url = "http://127.0.0.1:5000//horarios_"
     payload = {
         "datainicio": weekDays[0]["data"],
-        "datafim" : weekDays[6]["data"],
-        "userId" : session['userId']
+        "datafim": weekDays[6]["data"],
+        "userId": session['userId']
     }
 
     headers = {

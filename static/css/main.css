@@ -27,3 +27,10 @@ body{
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
 }
+
+.cardHorario {
+    background-color: white;
+    padding: 5px 0px;
+    margin-bottom: 5px;
+    font-size: 15px;
+}
