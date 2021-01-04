@@ -4,7 +4,10 @@ from flask_restful import Resource
 from flask import request
 from marshmallow import ValidationError
 
+from models.cadeira import CadeiraModel
+from models.sala import SalaModel
 from models.user import UserModel
+from schemas.cadeira import CadeiraSchema
 from schemas.horario import HorarioSchema
 from flask_jwt_extended import (
     jwt_required,
@@ -15,12 +18,16 @@ from flask_jwt_extended import (
 )
 from models.horario import HorarioModal
 from libs.strings import gettext
+from schemas.sala import SalaSchema
 from schemas.user import UserSchema
 
 horario_schema = HorarioSchema()
 horario_list_schema = HorarioSchema(many=True)
 
 user_schema = UserSchema()
+
+cadeira_schema = CadeiraSchema()
+sala_schema = SalaSchema()
 
 class HorarioId(Resource):
     @classmethod
@@ -107,10 +114,14 @@ class HorarioGeral(Resource):
 
         horarios = HorarioModal.find_users_horario(cadeiras,dateInicio1, dateFim1)
 
+
         if horarios:
             data = horario_list_schema.dump(horarios)
             for d in data:
                 x = d['data'].split("/")
                 d['data'] = x[2] + "/" + x[1] + "/" + x[0]
-            return horario_list_schema.dump(data), 200
+                d['cadeiraNome'] = CadeiraModel.find_by_id(d['cadeira_id']).name
+                d['salaNome'] = SalaModel.find_by_id(d['sala_id']).identificacao
+            print(data)
+            return data, 200
         return {"message": gettext("horarios_not_found")}, 404
