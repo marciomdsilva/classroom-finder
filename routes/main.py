@@ -130,7 +130,7 @@ def maptab():
         return redirect(returnRedirect)
 
     session['page'] = "mapa"
-    return render_template('index.html')
+    return render_template('mapa.html')
 
 
 @main.route('/logout')

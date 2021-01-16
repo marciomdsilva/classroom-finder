@@ -121,7 +121,10 @@ class HorarioGeral(Resource):
                 x = d['data'].split("/")
                 d['data'] = x[2] + "/" + x[1] + "/" + x[0]
                 d['cadeiraNome'] = CadeiraModel.find_by_id(d['cadeira_id']).name
-                d['salaNome'] = SalaModel.find_by_id(d['sala_id']).identificacao
-            print(data)
+                sala = SalaModel.find_by_id(d['sala_id'])
+                d['salaNome'] = sala.identificacao
+                d['mapa0'] = sala.mapa0
+                d['mapa1'] = sala.mapa1
+                d['mapa2'] = sala.mapa2
             return data, 200
         return {"message": gettext("horarios_not_found")}, 404

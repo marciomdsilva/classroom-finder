@@ -31,11 +31,7 @@
                 <td>{{ result["andar"] }}</td>
                 <td>{{ result["lotacao"] }}</td>
                 <td>
-                    <a class="add btn btn-success text-white" title="Guardar" data-toggle="tooltip"
-                       style="display:none">
-                        <i class="far fa-save"></i>
-                    </a>
-                    <a class="edit btn btn-warning text-white" title="Editar" data-toggle="tooltip">
+                    <a class="edit btn btn-warning text-white" title="Editar" data-toggle="tooltip" href="/admSalas/{{ result["sala_id"] }}">
                         <i class="fas fa-edit"></i>
                     </a>
                     <a class="delete btn btn-danger" title="Eliminar"
@@ -61,7 +57,7 @@
             <i class="fas fa-trash-alt"></i>
         </a>
     </div>
-    <button type="button" style="float: left" class="btn btn-success add-new"><i class="fa fa-plus"></i> Criar</button>
+    <a type="button" style="float: left" class="btn btn-success" href="/admSalas/criar" ><i class="fa fa-plus"></i> Criar</a>
 
 
 {% endblock %}

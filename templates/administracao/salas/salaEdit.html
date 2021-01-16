@@ -1,0 +1,98 @@
+{% extends 'template.html' %}
+
+
+{% block content %}
+    <h2>Editar a sala</h2>
+    <form style="float: right" method="post" action="/admSalas/{{ data['sala']["sala_id"] }}"
+          enctype="multipart/form-data">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="identificacao">Identificacao</label>
+                    <input type="text" name="identificacao" id="identificacao" class="form-control"
+                           aria-labelledby="identificacao"
+                            {% if data['sala']["identificacao"] %}
+                           value="{{ data['sala']["identificacao"] }}" {% endif %} required>
+                </div>
+                <div class="col-md-3">
+                    <label for="andar">Andar</label>
+                    <input type="text" name="andar" id="andar" class="form-control" aria-labelledby="andar"
+                            {% if data['sala']["andar"] %} value="{{ data['sala']["andar"] }}" {% endif %}required>
+                </div>
+                <div class="col-md-3">
+                    <label for="lotacao">Lotação</label>
+                    <input type="text" name="lotacao" id="lotacao" class="form-control" aria-labelledby="lotacao"
+                            {% if data['sala']["lotacao"] %} value="{{ data['sala']["lotacao"] }}" {% endif %} required>
+                </div>
+
+                <h5 class="col-md-12 pt-3">Localização da sala</h5>
+
+                <div class="input-group col-md-7 pt-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroupFileAddon01">Andar 0</span>
+                    </div>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="mapa0" aria-describedby="mapa0">
+                        <label class="custom-file-label" for="mapa0">Procurar ficheiro</label>
+                    </div>
+                </div>
+               <div class="input-group col-md-1 pt-3">
+                    <a class="btn btn-primary" href="{{ url_for('static', filename=data["sala"]["mapa0"]) }}" target="_blank">
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                    </a>
+                </div>
+
+                <div class="input-group col-md-7 pt-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroupFileAddon01">Andar 1</span>
+                    </div>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="mapa1" aria-describedby="mapa1">
+                        <label class="custom-file-label" for="mapa1">Procurar ficheiro</label>
+                    </div>
+                </div>
+                <div class="input-group col-md-1 pt-3">
+                    <a class="btn btn-primary" href="{{ url_for('static', filename=data["sala"]["mapa1"]) }}" target="_blank">
+                         <i class="fa fa-eye" aria-hidden="true"></i>
+                    </a>
+                </div>
+
+                <div class="input-group col-md-7 pt-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroupFileAddon01">Andar 2</span>
+                    </div>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="mapa2" aria-describedby="mapa2">
+                        <label class="custom-file-label" for="mapa2">Procurar ficheiro</label>
+                    </div>
+                </div>
+               <div class="input-group col-md-1 pt-3">
+                    <a class="btn btn-primary" href="{{ url_for('static', filename=data["sala"]["mapa2"]) }}" target="_blank">
+                         <i class="fa fa-eye" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <a class="btn btn-secondary mb-2" href="/admSalas">Voltar</a>
+        <button type="submit" class="btn btn-success mb-2">Gravar</button>
+        {% if data["msg"] %}
+            <span>{{ data["msg"] }}</span>
+        {% endif %}
+    </form>
+
+
+{% endblock %}
+
+{% block scriptTags %}
+    <script>
+        $('.custom-file-input').on('change', function (e) {
+            //get the file name
+            var fileName = e.target.files[0].name;
+            //replace the "Choose a file" label
+            $(this).next('.custom-file-label').html(fileName);
+        })
+    </script>
+    {% include 'administracao/salas/jssalasCRUD.html' %}
+{% endblock %}
+

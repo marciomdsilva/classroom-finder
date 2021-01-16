@@ -1,3 +1,7 @@
+import os
+import time
+import os.path
+
 from flask_restful import Resource
 from flask import request
 from schemas.sala import SalaSchema
@@ -33,10 +37,33 @@ class SalaId(Resource):
 
         sala = SalaModel.find_by_id(sala_id)
         if sala:
-            sala_json = request.get_json()
-            sala.identificacao = sala_json["identificacao"]
-            sala.andar = sala_json["andar"]
-            sala.lotacao = sala_json["lotacao"]
+            sala.identificacao = request.form["identificacao"]
+            sala.andar = request.form["andar"]
+            sala.lotacao = request.form["lotacao"]
+            if 'mapa0' in request.files and request.files["mapa2"].filename != "mapa0":
+                file = request.files['mapa0']
+                filenameSplitted = file.filename.split(".")
+                filename = str(time.time()) + "0." + filenameSplitted[len(filenameSplitted) - 1]
+                file.save(os.path.join("static/salas", filename))
+                if os.path.exists("static/" + sala.mapa0):
+                    os.remove("static/" + sala.mapa0)
+                sala.mapa0 = "salas/" + filename
+            if 'mapa1' in request.files and request.files["mapa2"].filename != "mapa1":
+                file = request.files['mapa1']
+                filenameSplitted = file.filename.split(".")
+                filename = str(time.time()) + "1." + filenameSplitted[len(filenameSplitted) - 1]
+                file.save(os.path.join("static/salas", filename))
+                if os.path.exists("static/" + sala.mapa1):
+                    os.remove("static/" + sala.mapa1)
+                sala.mapa1 = "salas/" + filename
+            if 'mapa2' in request.files and request.files["mapa2"].filename != "mapa2":
+                file = request.files['mapa2']
+                filenameSplitted = file.filename.split(".")
+                filename = str(time.time()) + "2." + filenameSplitted[len(filenameSplitted) - 1]
+                file.save(os.path.join("static/salas", filename))
+                if os.path.exists("static/" + sala.mapa2):
+                    os.remove("static/" + sala.mapa2)
+                sala.mapa2 = "salas/" + filename
             sala.save_to_db()
             return sala_schema.dump(sala), 200
         else:
@@ -68,10 +95,31 @@ class SalaGeral(Resource):
     @classmethod
     @fresh_jwt_required
     def post(cls):
-        sala_json = request.get_json()
+        claims = get_jwt_claims()
+        if not claims["access"] or claims["access"] != 2:
+            return {"message": "Admin previlege required"}, 401
 
-        sala = sala_schema.load(sala_json)
+        sala = SalaModel(request.form["identificacao"], request.form["andar"], request.form["lotacao"])
 
+        if 'mapa0' in request.files:
+            file = request.files['mapa0']
+            filenameSplitted = file.filename.split(".")
+            filename = str(time.time()) + "0." + filenameSplitted[len(filenameSplitted) - 1]
+            file.save(os.path.join("static/salas", filename))
+            sala.mapa0 = "salas/" + filename
+        if 'mapa1' in request.files:
+            file = request.files['mapa1']
+            filenameSplitted = file.filename.split(".")
+            filename = str(time.time()) + "1." + filenameSplitted[len(filenameSplitted) - 1]
+            file.save(os.path.join("static/salas", filename))
+            sala.mapa1 = "salas/" + filename
+        if 'mapa2' in request.files:
+            file = request.files['mapa2']
+            filenameSplitted = file.filename.split(".")
+            filename = str(time.time()) + "2." + filenameSplitted[len(filenameSplitted) - 1]
+            file.save(os.path.join("static/salas", filename))
+            sala.mapa2 = "salas/" + filename
+        sala.save_to_db()
         try:
             sala.save_to_db()
         except:

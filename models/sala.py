@@ -9,10 +9,16 @@ class SalaModel(db.Model):
     identificacao = db.Column(db.String(80), nullable=False, unique=True)
     andar = db.Column(db.Integer, nullable=False)
     lotacao = db.Column(db.Integer, nullable=False)
+    mapa0 = db.Column(db.String(255), nullable=False)
+    mapa1 = db.Column(db.String(255), nullable=False)
+    mapa2 = db.Column(db.String(255), nullable=False)
 
-    #
+
     # horario = db.relationship("HorarioModel")
-
+    def __init__(self, identificacao, andar, lotacao):
+        self.identificacao = identificacao
+        self.andar = andar
+        self.lotacao = lotacao
     @classmethod
     def find_by_name(cls, identificacao: str) -> "SalaModel":
         return cls.query.filter_by(identificacao=identificacao).first()  # SELECT * FROM items Where name=name LIMIT 1

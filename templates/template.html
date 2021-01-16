@@ -9,6 +9,8 @@
     <!-- Bootstrap core CSS -->
     <link href="{{ url_for('static', filename='css/bootstrap/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/photoswipe.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/default-skin/default-skin.css') }}" rel="stylesheet">
 
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
@@ -88,12 +90,13 @@
     {% block content %}
     {% endblock %}
 </main>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
+
+<script src="{{ url_for('static', filename='js/jquery-3.5.1.slim.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/bootstrap/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/offcanvas.js') }}"></script>
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/photoswipe.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/photoswipe-ui-default.js') }}"></script>
 
 {% block scriptTags %}
 {% endblock %}

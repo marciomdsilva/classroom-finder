@@ -1,0 +1,35 @@
+{% extends 'template.html' %}
+
+
+
+
+{% block content %}
+    <h2>Mapa do ISMAT</h2>
+    <div class="input-group col-md-3 col-lg-2 col-5 mb-3 offset-md-8 offset-lg-9 offset-7">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="inputGroupSelect01">Andar</label>
+      </div>
+      <select class="custom-select" id="andar" onchange="changeImg()">
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+      </select>
+    </div>
+    <div class="row">
+        <div class="col-md-10 offset-md-1 mapa" id="mapa0" >
+            <img src="{{ url_for('static', filename='mapa0.jpeg') }}"  class="img-fluid">
+        </div>
+        <div class="col-md-10 offset-md-1 mapa" id="mapa1" style="display:none">
+            <img src="{{ url_for('static', filename='mapa1.jpeg') }}"  class="img-fluid">
+        </div>
+        <div class="col-md-10 offset-md-1 mapa" id="mapa2" style="display:none">
+            <img src="{{ url_for('static', filename='mapa2.jpeg') }}"  class="img-fluid">
+        </div>
+    </div>
+    <script>
+    function changeImg(){
+        Array.from(document.getElementsByClassName("mapa")).map(i => i.style.display="none");
+       document.getElementById("mapa"+document.getElementById("andar").value).style.display="block";
+    }
+    </script>
+{% endblock %}
