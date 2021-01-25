@@ -138,7 +138,7 @@
                                             {% if horario["sala_id"] == sala["sala_id"] %}
                                                 <option selected>{{ sala["identificacao"] }}</option>
                                             {% else %}
-                                                <option selected>Error</option>
+                                                <option >{{ sala["identificacao"] }}</option>
                                             {% endif %}
                                         {% endfor %}
                                     </select>

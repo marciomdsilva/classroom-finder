@@ -55,7 +55,7 @@ class HorarioId(Resource):
         if horario:
             try:
                 listHorarios = HorarioModal.getAllAssociated(horario.cadeira_id, horario.horainicio, horario.horafim,
-                                                             horario.sala_id)
+                                                             horario.sala_id, horario.diaSemana)
                 for r in listHorarios:
                     HorarioModal.find_by_id(r.horario_id).delete_from_db()
                 return {"message": gettext("horarios_deleted")}, 200

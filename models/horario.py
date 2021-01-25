@@ -1,4 +1,7 @@
 from typing import List
+
+from flask import session
+from sqlalchemy import func
 from db import db
 from sqlalchemy.sql import func, and_
 
@@ -60,8 +63,8 @@ class HorarioModal(db.Model):
             .order_by(HorarioModal.data, HorarioModal.horainicio)
 
     @classmethod
-    def getAllAssociated(self, cadeira_id, horainicio, horafim, sala_id  ) -> "HorarioModal":
-        return self.query.filter_by(cadeira_id=cadeira_id, horainicio=horainicio, horafim=horafim, sala_id=sala_id)
+    def getAllAssociated(self, cadeira_id, horainicio, horafim, sala_id, diaSemana  ) -> "HorarioModal":
+        return self.query.filter_by(diaSemana = diaSemana, cadeira_id=cadeira_id, horainicio=horainicio, horafim=horafim, sala_id=sala_id).all()
 
     def save_to_db(self) -> None:
         db.session.add(self)
